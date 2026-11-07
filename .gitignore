@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Packages/
+# 应用类项目保留 Package.resolved 以锁定依赖版本
+
+# Xcode（第一版不建工程，预留给后续）
+DerivedData/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcuserstate
+
+# 构建产物
+dist/
+*.app/
