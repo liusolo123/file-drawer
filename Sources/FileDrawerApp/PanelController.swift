@@ -18,15 +18,18 @@ final class DrawerPanel: NSPanel {
 final class PanelController: NSObject, NSWindowDelegate {
     private let panel: DrawerPanel
 
-    override init() {
+    /// 打开系统模态界面（如添加文件夹面板）时暂停「失焦即收起」。
+    var suppressesAutoHide = false
+
+    init(contentView: NSView) {
         panel = DrawerPanel(
-            contentRect: CGRect(x: 0, y: 0, width: 640, height: 420),
+            contentRect: CGRect(x: 0, y: 0, width: 720, height: 440),
             styleMask: [.borderless, .nonactivatingPanel],
             backing: .buffered,
             defer: false
         )
         super.init()
-        configurePanel()
+        configurePanel(contentView: contentView)
     }
 
     func toggle() {
@@ -59,7 +62,7 @@ final class PanelController: NSObject, NSWindowDelegate {
             ?? NSScreen.screens.first
     }
 
-    private func configurePanel() {
+    private func configurePanel(contentView: NSView) {
         panel.delegate = self
         panel.isFloatingPanel = true
         panel.level = .floating
@@ -79,31 +82,20 @@ final class PanelController: NSObject, NSWindowDelegate {
         material.layer?.cornerRadius = 12
         material.layer?.masksToBounds = true
 
-        let title = NSTextField(labelWithString: AppMetadata.displayName)
-        title.font = .systemFont(ofSize: 17, weight: .semibold)
-        title.alignment = .center
-
-        let hint = NSTextField(labelWithString: "骨架已完成，按 Esc 或点击外部收起")
-        hint.font = .systemFont(ofSize: 12)
-        hint.textColor = .secondaryLabelColor
-        hint.alignment = .center
-
-        let stack = NSStackView(views: [title, hint])
-        stack.orientation = .vertical
-        stack.alignment = .centerX
-        stack.spacing = 8
-        stack.translatesAutoresizingMaskIntoConstraints = false
-
-        material.addSubview(stack)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        material.addSubview(contentView)
         NSLayoutConstraint.activate([
-            stack.centerXAnchor.constraint(equalTo: material.centerXAnchor),
-            stack.centerYAnchor.constraint(equalTo: material.centerYAnchor)
+            contentView.leadingAnchor.constraint(equalTo: material.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: material.trailingAnchor),
+            contentView.topAnchor.constraint(equalTo: material.topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: material.bottomAnchor)
         ])
 
         panel.contentView = material
     }
 
     func windowDidResignKey(_ notification: Notification) {
+        guard !suppressesAutoHide else { return }
         hide()
     }
 }

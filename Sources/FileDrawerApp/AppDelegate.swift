@@ -5,14 +5,66 @@ import FileDrawerCore
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusItem: NSStatusItem?
     private var panelController: PanelController?
+    private var library: FolderLibrary?
+    private let store: StateStore
+    private var saveWorkItem: DispatchWorkItem?
+
+    override init() {
+        store = StateStore(directory: AppPaths.stateDirectory)
+        super.init()
+    }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        panelController = PanelController()
+        let library = FolderLibrary(state: loadState())
+        library.onChange = { [weak self] in self?.scheduleSave() }
+
+        let rootView = DrawerRootView(library: library)
+        rootView.onModalStateChange = { [weak self] active in
+            self?.panelController?.suppressesAutoHide = active
+        }
+
+        self.library = library
+        panelController = PanelController(contentView: rootView)
+
         installStatusItem()
+    }
+
+    func applicationWillTerminate(_ notification: Notification) {
+        saveWorkItem?.cancel()
+        saveNow()
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         false
+    }
+
+    private func loadState() -> DrawerState {
+        do {
+            return try store.load()
+        } catch {
+            NSLog("文件抽屉：读取状态失败，按空状态启动：\(error)")
+            return .empty
+        }
+    }
+
+    /// 500 毫秒合并写入，避免拖动排序时频繁落盘。
+    private func scheduleSave() {
+        saveWorkItem?.cancel()
+
+        let workItem = DispatchWorkItem { [weak self] in
+            self?.saveNow()
+        }
+        saveWorkItem = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: workItem)
+    }
+
+    private func saveNow() {
+        guard let library else { return }
+        do {
+            try store.save(library.state)
+        } catch {
+            NSLog("文件抽屉：保存状态失败：\(error)")
+        }
     }
 
     private func installStatusItem() {
