@@ -87,13 +87,34 @@ final class PanelController: NSObject, NSWindowDelegate {
         panel.backgroundColor = .clear
         panel.hasShadow = true
 
+        // 毛玻璃背板不一定遵守自身 layer 的圆角，外层需要一个裁剪容器。
+        let container = NSView()
+        container.wantsLayer = true
+        container.layer?.cornerRadius = 14
+        container.layer?.cornerCurve = .continuous
+        container.layer?.masksToBounds = true
+        container.layer?.backgroundColor = NSColor.clear.cgColor
+        container.layer?.borderWidth = 0.5
+        container.layer?.borderColor = NSColor.separatorColor
+            .withAlphaComponent(0.5)
+            .cgColor
+
         let material = NSVisualEffectView()
         material.material = .popover
         material.blendingMode = .behindWindow
         material.state = .active
         material.wantsLayer = true
-        material.layer?.cornerRadius = 12
-        material.layer?.masksToBounds = true
+        material.layer?.cornerRadius = 14
+        material.layer?.cornerCurve = .continuous
+        material.translatesAutoresizingMaskIntoConstraints = false
+
+        container.addSubview(material)
+        NSLayoutConstraint.activate([
+            material.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            material.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            material.topAnchor.constraint(equalTo: container.topAnchor),
+            material.bottomAnchor.constraint(equalTo: container.bottomAnchor)
+        ])
 
         contentView.translatesAutoresizingMaskIntoConstraints = false
         material.addSubview(contentView)
@@ -104,7 +125,7 @@ final class PanelController: NSObject, NSWindowDelegate {
             contentView.bottomAnchor.constraint(equalTo: material.bottomAnchor)
         ])
 
-        panel.contentView = material
+        panel.contentView = container
     }
 
     func windowDidResignKey(_ notification: Notification) {

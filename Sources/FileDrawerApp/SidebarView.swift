@@ -99,7 +99,7 @@ final class SidebarView: NSView {
 
         let buttonRow = NSStackView(views: [addButton, removeButton])
         buttonRow.orientation = .horizontal
-        buttonRow.spacing = 2
+        buttonRow.spacing = 4
         buttonRow.translatesAutoresizingMaskIntoConstraints = false
 
         let separator = NSBox()
@@ -127,9 +127,9 @@ final class SidebarView: NSView {
             separator.trailingAnchor.constraint(equalTo: trailingAnchor),
             separator.bottomAnchor.constraint(equalTo: buttonRow.topAnchor, constant: -6),
 
-            buttonRow.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            buttonRow.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
-            buttonRow.heightAnchor.constraint(equalToConstant: 22)
+            buttonRow.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+            buttonRow.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -6),
+            buttonRow.heightAnchor.constraint(equalToConstant: 28)
         ])
 
         updateRemoveButton()
@@ -140,14 +140,19 @@ final class SidebarView: NSView {
         symbol: String,
         action: Selector
     ) {
-        button.image = NSImage(systemSymbolName: symbol, accessibilityDescription: nil)
+        let configuration = NSImage.SymbolConfiguration(pointSize: 14, weight: .medium)
+        button.image = NSImage(systemSymbolName: symbol, accessibilityDescription: nil)?
+            .withSymbolConfiguration(configuration)
         button.imagePosition = .imageOnly
         button.bezelStyle = .inline
         button.isBordered = false
         button.target = self
         button.action = action
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.widthAnchor.constraint(equalToConstant: 22).isActive = true
+        NSLayoutConstraint.activate([
+            button.widthAnchor.constraint(equalToConstant: 28),
+            button.heightAnchor.constraint(equalToConstant: 28)
+        ])
     }
 
     private func updateRemoveButton() {

@@ -9,8 +9,7 @@ final class BrowserView: NSView {
         static let headerHeight: CGFloat = 26
     }
 
-    private static let nameCellIdentifier = NSUserInterfaceItemIdentifier("NameCell")
-    private static let dateCellIdentifier = NSUserInterfaceItemIdentifier("DateCell")
+    private static let entryCellIdentifier = NSUserInterfaceItemIdentifier("EntryCell")
 
     private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -82,10 +81,11 @@ final class BrowserView: NSView {
     }
 
     private func build() {
+        let configuration = NSImage.SymbolConfiguration(pointSize: 15, weight: .medium)
         backButton.image = NSImage(
             systemSymbolName: "chevron.left",
             accessibilityDescription: "返回上一级"
-        )
+        )?.withSymbolConfiguration(configuration)
         backButton.imagePosition = .imageOnly
         backButton.bezelStyle = .inline
         backButton.isBordered = false
@@ -93,8 +93,10 @@ final class BrowserView: NSView {
         backButton.action = #selector(goBack)
         backButton.toolTip = "返回上一级"
         backButton.translatesAutoresizingMaskIntoConstraints = false
-        backButton.widthAnchor.constraint(equalToConstant: 22).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: Metrics.headerHeight).isActive = true
+        NSLayoutConstraint.activate([
+            backButton.widthAnchor.constraint(equalToConstant: 30),
+            backButton.heightAnchor.constraint(equalToConstant: 28)
+        ])
 
         pathLabel.font = .systemFont(ofSize: 12, weight: .medium)
         pathLabel.lineBreakMode = .byTruncatingMiddle
@@ -175,17 +177,13 @@ final class BrowserView: NSView {
         tableView.delegate = self
         tableView.target = self
         tableView.doubleAction = #selector(openSelection)
-        tableView.columnAutoresizingStyle = .firstColumnOnlyAutoresizingStyle
+        tableView.columnAutoresizingStyle = .lastColumnOnlyAutoresizingStyle
 
-        let nameColumn = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("name"))
-        nameColumn.width = 360
-        nameColumn.resizingMask = .autoresizingMask
-        tableView.addTableColumn(nameColumn)
-
-        let dateColumn = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("date"))
-        dateColumn.width = 140
-        dateColumn.resizingMask = .userResizingMask
-        tableView.addTableColumn(dateColumn)
+        // 单列承载「图标 + 名称 + 修改时间」，避免多列固定宽度在窄面板里被裁切。
+        let entryColumn = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("entry"))
+        entryColumn.width = 400
+        entryColumn.resizingMask = .autoresizingMask
+        tableView.addTableColumn(entryColumn)
     }
 
     private func updatePathLabel() {
@@ -267,24 +265,21 @@ extension BrowserView: NSTableViewDataSource, NSTableViewDelegate {
         viewFor tableColumn: NSTableColumn?,
         row: Int
     ) -> NSView? {
-        guard entries.indices.contains(row), let tableColumn else { return nil }
+        guard entries.indices.contains(row) else { return nil }
         let entry = entries[row]
 
-        if tableColumn.identifier.rawValue == "date" {
-            let cell = tableView.makeView(withIdentifier: Self.dateCellIdentifier, owner: self)
-                as? NSTableCellView ?? makeDateCell()
-            cell.textField?.stringValue = entry.modifiedAt.map(Self.dateFormatter.string(from:)) ?? ""
-            return cell
-        }
+        let cell = tableView.makeView(withIdentifier: Self.entryCellIdentifier, owner: self)
+            as? EntryCellView ?? EntryCellView(identifier: Self.entryCellIdentifier)
 
-        let cell = tableView.makeView(withIdentifier: Self.nameCellIdentifier, owner: self)
-            as? NSTableCellView ?? makeNameCell()
-        cell.textField?.stringValue = entry.name
-        cell.imageView?.image = NSImage(
+        cell.nameLabel.stringValue = entry.name
+        cell.dateLabel.stringValue = entry.modifiedAt.map(Self.dateFormatter.string(from:)) ?? ""
+        cell.iconView.image = NSImage(
             systemSymbolName: symbolName(for: entry),
             accessibilityDescription: nil
         )
-        cell.imageView?.contentTintColor = entry.isBrowsable ? .controlAccentColor : .secondaryLabelColor
+        cell.iconView.contentTintColor = entry.isBrowsable
+            ? .controlAccentColor
+            : .secondaryLabelColor
         return cell
     }
 
@@ -294,57 +289,61 @@ extension BrowserView: NSTableViewDataSource, NSTableViewDelegate {
         return "doc"
     }
 
-    private func makeNameCell() -> NSTableCellView {
-        let cell = NSTableCellView()
-        cell.identifier = Self.nameCellIdentifier
+}
 
-        let icon = NSImageView()
-        icon.translatesAutoresizingMaskIntoConstraints = false
-        icon.imageScaling = .scaleProportionallyDown
+/// 单列单元格：图标、名称、修改时间。名称可截断，时间固定贴右。
+@MainActor
+final class EntryCellView: NSTableCellView {
+    let iconView = NSImageView()
+    let nameLabel = NSTextField(labelWithString: "")
+    let dateLabel = NSTextField(labelWithString: "")
 
-        let text = NSTextField(labelWithString: "")
-        text.translatesAutoresizingMaskIntoConstraints = false
-        text.font = .systemFont(ofSize: 13)
-        text.lineBreakMode = .byTruncatingMiddle
-
-        cell.addSubview(icon)
-        cell.addSubview(text)
-        cell.imageView = icon
-        cell.textField = text
-
-        NSLayoutConstraint.activate([
-            icon.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: 4),
-            icon.centerYAnchor.constraint(equalTo: cell.centerYAnchor),
-            icon.widthAnchor.constraint(equalToConstant: 16),
-            icon.heightAnchor.constraint(equalToConstant: 16),
-
-            text.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 8),
-            text.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: -4),
-            text.centerYAnchor.constraint(equalTo: cell.centerYAnchor)
-        ])
-
-        return cell
+    init(identifier: NSUserInterfaceItemIdentifier) {
+        super.init(frame: .zero)
+        self.identifier = identifier
+        build()
     }
 
-    private func makeDateCell() -> NSTableCellView {
-        let cell = NSTableCellView()
-        cell.identifier = Self.dateCellIdentifier
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
-        let text = NSTextField(labelWithString: "")
-        text.translatesAutoresizingMaskIntoConstraints = false
-        text.font = .systemFont(ofSize: 11)
-        text.textColor = .secondaryLabelColor
-        text.alignment = .right
+    private func build() {
+        iconView.translatesAutoresizingMaskIntoConstraints = false
+        iconView.imageScaling = .scaleProportionallyDown
 
-        cell.addSubview(text)
-        cell.textField = text
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.font = .systemFont(ofSize: 13)
+        nameLabel.lineBreakMode = .byTruncatingMiddle
+        nameLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+
+        dateLabel.translatesAutoresizingMaskIntoConstraints = false
+        dateLabel.font = .systemFont(ofSize: 11)
+        dateLabel.textColor = .secondaryLabelColor
+        dateLabel.alignment = .right
+        dateLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        dateLabel.setContentHuggingPriority(.required, for: .horizontal)
+
+        addSubview(iconView)
+        addSubview(nameLabel)
+        addSubview(dateLabel)
 
         NSLayoutConstraint.activate([
-            text.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: 4),
-            text.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: -8),
-            text.centerYAnchor.constraint(equalTo: cell.centerYAnchor)
-        ])
+            iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
+            iconView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            iconView.widthAnchor.constraint(equalToConstant: 16),
+            iconView.heightAnchor.constraint(equalToConstant: 16),
 
-        return cell
+            nameLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 8),
+            nameLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            nameLabel.trailingAnchor.constraint(
+                lessThanOrEqualTo: dateLabel.leadingAnchor,
+                constant: -10
+            ),
+
+            dateLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            dateLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
     }
 }
