@@ -30,18 +30,40 @@ public struct CommonFolder: Codable, Equatable, Identifiable, Sendable {
     public var bookmark: Data
     /// 派生状态，加载时会按实际文件系统重新计算。
     public var status: FolderStatus
+    /// 相对于该文件夹根目录的「浏览位置」，空数组表示根目录本身。
+    public var browsingPath: [String]
 
     public init(
         id: UUID = UUID(),
         displayName: String,
         bookmark: Data,
-        status: FolderStatus = .available
+        status: FolderStatus = .available,
+        browsingPath: [String] = []
     ) {
         self.id = id
         self.displayName = displayName
         self.bookmark = bookmark
         self.status = status
+        self.browsingPath = browsingPath
     }
 
     public var isAvailable: Bool { status == .available }
+
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case displayName
+        case bookmark
+        case status
+        case browsingPath
+    }
+
+    /// 早期状态文件没有 `browsingPath`，按根目录处理。
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(UUID.self, forKey: .id)
+        displayName = try container.decode(String.self, forKey: .displayName)
+        bookmark = try container.decode(Data.self, forKey: .bookmark)
+        status = try container.decodeIfPresent(FolderStatus.self, forKey: .status) ?? .available
+        browsingPath = try container.decodeIfPresent([String].self, forKey: .browsingPath) ?? []
+    }
 }

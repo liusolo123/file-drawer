@@ -8,9 +8,12 @@ CONFIG="${1:-release}"
 EXECUTABLE_NAME="FileDrawer"
 APP_NAME="文件抽屉"
 APP_PATH="dist/${APP_NAME}.app"
+# 独立构建目录：避免 release 构建与 swift test 共用 .build，导致
+# SwiftPM 的宏插件解析缓存被改写（表现为 TestingMacros 找不到）。
+SCRATCH_DIR=".build-app"
 
-swift build -c "$CONFIG" --product FileDrawerApp
-BIN_DIR="$(swift build -c "$CONFIG" --show-bin-path)"
+swift build -c "$CONFIG" --scratch-path "$SCRATCH_DIR" --product FileDrawerApp
+BIN_DIR="$(swift build -c "$CONFIG" --scratch-path "$SCRATCH_DIR" --show-bin-path)"
 
 rm -rf "$APP_PATH"
 mkdir -p "$APP_PATH/Contents/MacOS" "$APP_PATH/Contents/Resources"

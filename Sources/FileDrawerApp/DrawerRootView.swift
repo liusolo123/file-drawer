@@ -1,17 +1,15 @@
 import AppKit
 import FileDrawerCore
 
-/// 抽屉内容：左侧常用文件夹，右侧当前选中项。
+/// 抽屉内容：左侧常用文件夹，右侧当前浏览位置。
 @MainActor
 final class DrawerRootView: NSView {
     private let library: FolderLibrary
     private let sidebar: SidebarView
+    private let browser: BrowserView
     private let contentHost = NSView()
 
     private let emptyStack = NSStackView()
-    private let detailStack = NSStackView()
-    private let detailTitle = NSTextField(labelWithString: "")
-    private let detailSubtitle = NSTextField(labelWithString: "")
 
     /// 打开系统文件面板等模态界面时通知外层暂停自动收起。
     var onModalStateChange: ((Bool) -> Void)?
@@ -19,6 +17,7 @@ final class DrawerRootView: NSView {
     init(library: FolderLibrary) {
         self.library = library
         self.sidebar = SidebarView(library: library)
+        self.browser = BrowserView(library: library)
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         build()
@@ -77,8 +76,17 @@ final class DrawerRootView: NSView {
             contentHost.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
 
+        browser.translatesAutoresizingMaskIntoConstraints = false
+        contentHost.addSubview(browser)
+        NSLayoutConstraint.activate([
+            browser.leadingAnchor.constraint(equalTo: contentHost.leadingAnchor),
+            browser.trailingAnchor.constraint(equalTo: contentHost.trailingAnchor),
+            browser.topAnchor.constraint(equalTo: contentHost.topAnchor),
+            browser.bottomAnchor.constraint(equalTo: contentHost.bottomAnchor)
+        ])
+
         buildEmptyState()
-        buildDetail()
+        browser.isHidden = true
     }
 
     private func buildEmptyState() {
@@ -120,55 +128,21 @@ final class DrawerRootView: NSView {
         ])
     }
 
-    private func buildDetail() {
-        detailTitle.font = .systemFont(ofSize: 15, weight: .medium)
-
-        detailSubtitle.font = .systemFont(ofSize: 12)
-        detailSubtitle.textColor = .secondaryLabelColor
-        detailSubtitle.alignment = .center
-        detailSubtitle.lineBreakMode = .byWordWrapping
-        detailSubtitle.maximumNumberOfLines = 3
-
-        detailStack.orientation = .vertical
-        detailStack.alignment = .centerX
-        detailStack.spacing = 8
-        detailStack.translatesAutoresizingMaskIntoConstraints = false
-        detailStack.addArrangedSubview(detailTitle)
-        detailStack.addArrangedSubview(detailSubtitle)
-
-        contentHost.addSubview(detailStack)
-        NSLayoutConstraint.activate([
-            detailStack.centerXAnchor.constraint(equalTo: contentHost.centerXAnchor),
-            detailStack.centerYAnchor.constraint(equalTo: contentHost.centerYAnchor),
-            detailStack.leadingAnchor.constraint(
-                greaterThanOrEqualTo: contentHost.leadingAnchor,
-                constant: 24
-            ),
-            detailStack.trailingAnchor.constraint(
-                lessThanOrEqualTo: contentHost.trailingAnchor,
-                constant: -24
-            )
-        ])
-    }
-
     private func showEmptyState() {
         emptyStack.isHidden = false
-        detailStack.isHidden = true
+        browser.isHidden = true
     }
 
     private func showDetail(_ folder: CommonFolder?) {
         guard let folder else {
             emptyStack.isHidden = !library.folders.isEmpty
-            detailStack.isHidden = true
+            browser.isHidden = true
             return
         }
 
         emptyStack.isHidden = true
-        detailStack.isHidden = false
-        detailTitle.stringValue = folder.displayName
-        detailSubtitle.stringValue = folder.isAvailable
-            ? "浏览内容将在下一张票实现"
-            : folder.status.localizedDescription
+        browser.isHidden = false
+        browser.show(folder: folder)
     }
 
     // MARK: - 添加

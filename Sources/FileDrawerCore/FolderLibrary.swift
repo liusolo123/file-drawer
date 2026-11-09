@@ -4,6 +4,17 @@ public enum FolderLibraryError: Error, Equatable {
     case notADirectory
 }
 
+/// 解析后的「浏览位置」。`didFallBackToRoot` 说明原记忆位置已不可用。
+public struct BrowsingLocation: Equatable, Sendable {
+    public let url: URL
+    public let didFallBackToRoot: Bool
+
+    public init(url: URL, didFallBackToRoot: Bool = false) {
+        self.url = url
+        self.didFallBackToRoot = didFallBackToRoot
+    }
+}
+
 /// 「常用文件夹」集合：顺序、增删、状态与持久化快照。
 ///
 /// 只处理领域规则，不碰 UI，也不决定何时落盘。
@@ -84,9 +95,49 @@ public final class FolderLibrary {
         onChange?()
     }
 
+    /// 当前「浏览位置」，相对于该文件夹根目录。
+    public func browsingPath(for id: UUID) -> [String] {
+        folders.first(where: { $0.id == id })?.browsingPath ?? []
+    }
+
+    /// 更新「浏览位置」。与当前值相同时不触发保存。
+    public func setBrowsingPath(_ path: [String], for id: UUID) {
+        guard let index = folders.firstIndex(where: { $0.id == id }),
+              folders[index].browsingPath != path else {
+            return
+        }
+
+        folders[index].browsingPath = path
+        onChange?()
+    }
+
+    /// 解析可浏览的位置。记录的子目录已不可用时退回根目录并重置记忆。
+    public func resolveBrowsingLocation(for id: UUID) -> BrowsingLocation? {
+        guard let root = resolvedURLs[id],
+              let index = folders.firstIndex(where: { $0.id == id }) else {
+            return nil
+        }
+
+        let components = folders[index].browsingPath
+        guard !components.isEmpty else {
+            return BrowsingLocation(url: root)
+        }
+
+        let candidate = components.reduce(root) { url, component in
+            url.appendingPathComponent(component, isDirectory: true)
+        }
+
+        guard access.status(of: candidate) == .available else {
+            folders[index].browsingPath = []
+            onChange?()
+            return BrowsingLocation(url: root, didFallBackToRoot: true)
+        }
+
+        return BrowsingLocation(url: candidate)
+    }
+
     /// 重新解析全部书签并刷新状态。解析失败保留条目。
-    public func reload() {
-        for index in folders.indices {
+    public func reload() {        for index in folders.indices {
             let folder = folders[index]
 
             do {

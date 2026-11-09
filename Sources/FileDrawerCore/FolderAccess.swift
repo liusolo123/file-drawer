@@ -19,6 +19,7 @@ public protocol FolderAccess: Sendable {
     func resolveBookmark(_ data: Data) throws -> ResolvedFolder
     func displayName(for url: URL) -> String
     func status(of url: URL) -> FolderStatus
+    func contents(of url: URL) throws -> [DirectoryEntry]
 }
 
 public struct LocalFolderAccess: FolderAccess {
@@ -85,6 +86,35 @@ public struct LocalFolderAccess: FolderAccess {
         }
 
         return .available
+    }
+
+    public func contents(of url: URL) throws -> [DirectoryEntry] {
+        let keys: [URLResourceKey] = [
+            .nameKey,
+            .isDirectoryKey,
+            .isPackageKey,
+            .contentModificationDateKey
+        ]
+
+        let urls = try FileManager.default.contentsOfDirectory(
+            at: url,
+            includingPropertiesForKeys: keys,
+            options: [.skipsHiddenFiles]
+        )
+
+        return urls.compactMap { child in
+            guard let values = try? child.resourceValues(forKeys: Set(keys)) else {
+                return nil
+            }
+
+            return DirectoryEntry(
+                url: child,
+                name: values.name ?? child.lastPathComponent,
+                isDirectory: values.isDirectory ?? false,
+                isPackage: values.isPackage ?? false,
+                modifiedAt: values.contentModificationDate
+            )
+        }
     }
 
     /// `/Volumes/<name>/...` 的挂载点不存在时，视为卷未连接。
