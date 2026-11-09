@@ -19,7 +19,20 @@ final class PanelController: NSObject, NSWindowDelegate {
     private let panel: DrawerPanel
 
     /// 打开系统模态界面（如添加文件夹面板）时暂停「失焦即收起」。
-    var suppressesAutoHide = false
+    private(set) var suppressesAutoHide = false
+
+    /// 模态界面期间把抽屉降到普通窗口层级并压后，避免遮挡系统面板。
+    func setModalActive(_ active: Bool) {
+        if active {
+            suppressesAutoHide = true
+            panel.level = .normal
+            panel.orderBack(nil)
+        } else {
+            suppressesAutoHide = false
+            panel.level = .floating
+            panel.orderFront(nil)
+        }
+    }
 
     init(contentView: NSView) {
         panel = DrawerPanel(

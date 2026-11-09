@@ -20,7 +20,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         let rootView = DrawerRootView(library: library)
         rootView.onModalStateChange = { [weak self] active in
-            self?.panelController?.suppressesAutoHide = active
+            self?.panelController?.setModalActive(active)
         }
 
         self.library = library
