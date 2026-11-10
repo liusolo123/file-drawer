@@ -44,6 +44,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         monitor.start()
         hoverMonitor = monitor
 
+        rootView.setInteractionHandler { [weak self] active in
+            self?.panelController?.setInteractionActive(active)
+            if active {
+                self?.hoverMonitor?.beginInteraction()
+            } else {
+                self?.hoverMonitor?.endInteraction()
+            }
+        }
+
         let hotkey = HotkeyCenter { [weak self] in
             self?.hoverMonitor?.hotkeyPressed()
         }

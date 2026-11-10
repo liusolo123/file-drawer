@@ -1,5 +1,6 @@
 import AppKit
 import FileDrawerCore
+import QuickLookUI
 
 /// 右侧内容：当前「浏览位置」的路径、返回与文件列表。
 @MainActor
@@ -31,7 +32,7 @@ final class BrowserView: NSView {
     private let searchField = NSSearchField()
     private let sortButton = NSPopUpButton()
     private let noticeLabel = NSTextField(labelWithString: "")
-    private let tableView = NSTableView()
+    private let tableView = DrawerTableView()
     private let scrollView = NSScrollView()
     private let placeholder = NSTextField(wrappingLabelWithString: "")
 
@@ -45,6 +46,11 @@ final class BrowserView: NSView {
     private var searchGeneration = 0
     private var isShowingSearchResults = false
     private var searchMatches: [SearchMatch] = []
+
+    private var previewURLs: [URL] = []
+
+    /// 预览或右键菜单开始/结束时通知外层暂停自动收起。
+    var onInteractionChange: ((Bool) -> Void)?
 
     init(library: FolderLibrary) {
         self.library = library
@@ -323,6 +329,10 @@ final class BrowserView: NSView {
         tableView.target = self
         tableView.doubleAction = #selector(openSelection)
         tableView.columnAutoresizingStyle = .lastColumnOnlyAutoresizingStyle
+        tableView.onSpace = { [weak self] in self?.togglePreview() }
+        tableView.contextMenuProvider = { [weak self] row in
+            self?.makeContextMenu(for: row)
+        }
 
         // 单列承载「图标 + 名称 + 修改时间」，避免多列固定宽度在窄面板里被裁切。
         let entryColumn = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("entry"))
@@ -434,45 +444,169 @@ final class BrowserView: NSView {
 
     @objc private func openSelection() {
         let row = tableView.clickedRow >= 0 ? tableView.clickedRow : tableView.selectedRow
-        guard entries.indices.contains(row),
-              let folder = currentFolderSnapshot() else {
-            return
-        }
+        guard entries.indices.contains(row) else { return }
+        performOpen(entries[row])
+    }
 
-        let entry = entries[row]
-
-        if isShowingSearchResults {
-            openSearchResult(entry, folder: folder)
-            return
-        }
-
-        if entry.isPackage {
+    private func performOpen(_ entry: DirectoryEntry) {
+        if entry.isBrowsable {
+            enter(entry)
+        } else {
             NSWorkspace.shared.open(entry.url)
-            return
+        }
+    }
+
+    private func enter(_ entry: DirectoryEntry) {
+        guard let folder = currentFolderSnapshot() else { return }
+
+        let path: [String]
+        if isShowingSearchResults,
+           let match = searchMatches.first(where: { $0.entry.id == entry.id }) {
+            path = match.relativePath + [entry.name]
+        } else {
+            path = library.browsingPath(for: folder.id) + [entry.name]
         }
 
-        guard entry.isBrowsable else { return }
-
-        var path = library.browsingPath(for: folder.id)
-        path.append(entry.name)
         library.setBrowsingPath(path, for: folder.id)
         show(folder: currentFolderSnapshot() ?? folder)
     }
 
-    /// 搜索结果里的文件夹：跳到它所在的位置并进入。
-    private func openSearchResult(_ entry: DirectoryEntry, folder: CommonFolder) {
-        if entry.isPackage {
-            NSWorkspace.shared.open(entry.url)
-            return
+    // MARK: - 取用
+
+    private func selectedEntries() -> [DirectoryEntry] {
+        tableView.selectedRowIndexes.compactMap { index in
+            entries.indices.contains(index) ? entries[index] : nil
+        }
+    }
+
+    private func selectedURLs() -> [URL] {
+        selectedEntries().map(\.url)
+    }
+
+    private func togglePreview() {
+        guard let panel = QLPreviewPanel.shared() else { return }
+
+        if panel.isVisible {
+            panel.orderOut(nil)
+        } else {
+            previewSelection()
+        }
+    }
+
+    private func previewSelection() {
+        let urls = selectedURLs()
+        guard !urls.isEmpty, let panel = QLPreviewPanel.shared() else { return }
+
+        previewURLs = urls
+        panel.reloadData()
+        panel.makeKeyAndOrderFront(nil)
+    }
+
+    @objc private func menuOpen() {
+        guard let entry = selectedEntries().first else { return }
+        performOpen(entry)
+    }
+
+    @objc private func menuPreview() {
+        previewSelection()
+    }
+
+    @objc private func menuReveal() {
+        let urls = selectedURLs()
+        guard !urls.isEmpty else { return }
+        NSWorkspace.shared.activateFileViewerSelecting(urls)
+    }
+
+    @objc private func menuCopy() {
+        let urls = selectedURLs()
+        guard !urls.isEmpty else { return }
+
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.writeObjects(urls as [NSURL])
+    }
+
+    @objc private func menuCopyPath() {
+        guard let path = selectedURLs().first?.path else { return }
+
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString(path, forType: .string)
+    }
+
+    private func makeContextMenu(for row: Int) -> NSMenu? {
+        guard entries.indices.contains(row) else { return nil }
+        let entry = entries[row]
+
+        let menu = NSMenu()
+        menu.autoenablesItems = false
+        menu.delegate = self
+
+        let items: [(ContextMenuAction, String, Selector)] = [
+            (.open, "打开", #selector(menuOpen)),
+            (.preview, "预览", #selector(menuPreview)),
+            (.revealInFinder, "在 Finder 中显示", #selector(menuReveal)),
+            (.copyToClipboard, "复制到剪贴板", #selector(menuCopy)),
+            (.copyPath, "复制路径", #selector(menuCopyPath))
+        ]
+
+        for (action, title, selector) in items {
+            let item = NSMenuItem(title: title, action: selector, keyEquivalent: "")
+            item.target = self
+            item.isEnabled = ContextMenuPolicy.isEnabled(action, for: entry)
+            menu.addItem(item)
         }
 
-        guard entry.isBrowsable,
-              let match = searchMatches.first(where: { $0.entry.id == entry.id }) else {
-            return
-        }
+        return menu
+    }
+}
 
-        library.setBrowsingPath(match.relativePath + [entry.name], for: folder.id)
-        show(folder: currentFolderSnapshot() ?? folder)
+// MARK: - Quick Look
+
+extension BrowserView {
+    override nonisolated func acceptsPreviewPanelControl(_ panel: QLPreviewPanel!) -> Bool {
+        true
+    }
+
+    override nonisolated func beginPreviewPanelControl(_ panel: QLPreviewPanel!) {
+        MainActor.assumeIsolated {
+            panel.dataSource = self
+            panel.delegate = self
+            onInteractionChange?(true)
+        }
+    }
+
+    override nonisolated func endPreviewPanelControl(_ panel: QLPreviewPanel!) {
+        MainActor.assumeIsolated {
+            panel.dataSource = nil
+            panel.delegate = nil
+            onInteractionChange?(false)
+
+            // 预览关闭后收回键盘焦点，让下一次 Esc 能收起抽屉。
+            if let window, window.isVisible {
+                window.makeKey()
+            }
+        }
+    }
+}
+
+extension BrowserView: @preconcurrency QLPreviewPanelDataSource {
+    func numberOfPreviewItems(in panel: QLPreviewPanel!) -> Int {
+        previewURLs.count
+    }
+
+    func previewPanel(_ panel: QLPreviewPanel!, previewItemAt index: Int) -> QLPreviewItem! {
+        previewURLs[index] as NSURL
+    }
+}
+
+extension BrowserView: NSMenuDelegate {
+    func menuWillOpen(_ menu: NSMenu) {
+        onInteractionChange?(true)
+    }
+
+    func menuDidClose(_ menu: NSMenu) {
+        onInteractionChange?(false)
     }
 }
 

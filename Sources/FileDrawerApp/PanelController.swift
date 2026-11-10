@@ -90,9 +90,13 @@ final class PanelController: NSObject, NSWindowDelegate {
         previousApplication.activate()
     }
 
+    /// 预览或右键菜单期间暂停「失焦即收起」。
+    func setInteractionActive(_ active: Bool) {
+        suppressesAutoHide = active
+    }
+
     /// 模态界面期间把抽屉降到普通窗口层级并压后，避免遮挡系统面板。
-    func setModalActive(_ active: Bool) {
-        if active {
+    func setModalActive(_ active: Bool) {        if active {
             suppressesAutoHide = true
             panel.level = .normal
             panel.orderBack(nil)

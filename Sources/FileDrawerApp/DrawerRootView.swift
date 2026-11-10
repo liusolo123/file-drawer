@@ -59,6 +59,11 @@ final class DrawerRootView: NSView {
         browser.setShowsHiddenFiles(value)
     }
 
+    /// 预览或右键菜单的进行状态，用于暂停自动收起。
+    func setInteractionHandler(_ handler: @escaping (Bool) -> Void) {
+        browser.onInteractionChange = handler
+    }
+
     private func build() {
         contentHost.translatesAutoresizingMaskIntoConstraints = false
 
