@@ -5,6 +5,7 @@ import FileDrawerCore
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusItem: NSStatusItem?
     private var panelController: PanelController?
+    private var hoverMonitor: HoverMonitor?
     private var library: FolderLibrary?
     private let store: StateStore
     private var saveWorkItem: DispatchWorkItem?
@@ -24,7 +25,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         self.library = library
-        panelController = PanelController(contentView: rootView)
+        let panel = PanelController(contentView: rootView)
+        panelController = panel
+
+        let monitor = HoverMonitor(panelController: panel)
+        monitor.start()
+        hoverMonitor = monitor
 
         installStatusItem()
     }

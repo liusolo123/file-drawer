@@ -4,22 +4,81 @@ import FileDrawerCore
 /// 抽屉面板：无边框、可成为键盘窗口，但不成为主窗口。
 @MainActor
 final class DrawerPanel: NSPanel {
+    /// Esc 收起时要交还焦点，交给控制器处理。
+    var onCancel: (() -> Void)?
+
     override var canBecomeKey: Bool { true }
     override var canBecomeMain: Bool { false }
 
     /// Esc 通过响应链到达这里。
     override func cancelOperation(_ sender: Any?) {
-        orderOut(nil)
+        if let onCancel {
+            onCancel()
+        } else {
+            orderOut(nil)
+        }
     }
 }
 
-/// 管理唯一的抽屉面板：定位、显示、收起。
+/// 管理唯一的抽屉面板：定位、显示、收起与焦点交还。
 @MainActor
 final class PanelController: NSObject, NSWindowDelegate {
     private let panel: DrawerPanel
+    private var previousApplication: NSRunningApplication?
+    private var hadFocus = false
 
     /// 打开系统模态界面（如添加文件夹面板）时暂停「失焦即收起」。
     private(set) var suppressesAutoHide = false
+
+    var isVisible: Bool { panel.isVisible }
+    var panelFrame: CGRect { panel.frame }
+
+    init(contentView: NSView) {
+        panel = DrawerPanel(
+            contentRect: CGRect(x: 0, y: 0, width: 720, height: 440),
+            styleMask: [.borderless, .nonactivatingPanel],
+            backing: .buffered,
+            defer: false
+        )
+        super.init()
+        configurePanel(contentView: contentView)
+        panel.onCancel = { [weak self] in
+            self?.hide(returnFocus: true)
+        }
+    }
+
+    func toggle() {
+        if panel.isVisible {
+            hide()
+        } else {
+            show()
+        }
+    }
+
+    /// 从菜单栏打开：展开并激活应用、取得键盘焦点。
+    func show() {
+        present(activating: true)
+    }
+
+    /// 悬停打开：只把面板前置，不激活应用、不抢键盘焦点。
+    func showWithoutFocus() {
+        present(activating: false)
+    }
+
+    func hide(returnFocus: Bool? = nil) {
+        let shouldReturnFocus = returnFocus ?? hadFocus
+        hadFocus = false
+        panel.orderOut(nil)
+
+        guard shouldReturnFocus,
+              let previousApplication,
+              !previousApplication.isTerminated,
+              previousApplication.processIdentifier != ProcessInfo.processInfo.processIdentifier else {
+            return
+        }
+
+        previousApplication.activate()
+    }
 
     /// 模态界面期间把抽屉降到普通窗口层级并压后，避免遮挡系统面板。
     func setModalActive(_ active: Bool) {
@@ -34,38 +93,24 @@ final class PanelController: NSObject, NSWindowDelegate {
         }
     }
 
-    init(contentView: NSView) {
-        panel = DrawerPanel(
-            contentRect: CGRect(x: 0, y: 0, width: 720, height: 440),
-            styleMask: [.borderless, .nonactivatingPanel],
-            backing: .buffered,
-            defer: false
-        )
-        super.init()
-        configurePanel(contentView: contentView)
-    }
-
-    func toggle() {
-        if panel.isVisible {
-            hide()
-        } else {
-            show()
-        }
-    }
-
-    func show() {
+    private func present(activating: Bool) {
         guard let screen = targetScreen() else { return }
+
+        if !panel.isVisible {
+            previousApplication = NSWorkspace.shared.frontmostApplication
+        }
 
         panel.setFrame(
             PanelPlacement.topCenter(panelSize: panel.frame.size, in: screen.visibleFrame),
             display: true
         )
-        panel.makeKeyAndOrderFront(nil)
-        NSApp.activate()
-    }
 
-    func hide() {
-        panel.orderOut(nil)
+        if activating {
+            panel.makeKeyAndOrderFront(nil)
+            NSApp.activate()
+        } else {
+            panel.orderFrontRegardless()
+        }
     }
 
     private func targetScreen() -> NSScreen? {
@@ -128,8 +173,13 @@ final class PanelController: NSObject, NSWindowDelegate {
         panel.contentView = container
     }
 
+    func windowDidBecomeKey(_ notification: Notification) {
+        hadFocus = true
+    }
+
     func windowDidResignKey(_ notification: Notification) {
         guard !suppressesAutoHide else { return }
-        hide()
+        // 用户点击了其他应用：焦点应留在那个应用，不夺回。
+        hide(returnFocus: false)
     }
 }

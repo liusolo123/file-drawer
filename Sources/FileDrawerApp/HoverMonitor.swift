@@ -1,0 +1,111 @@
+import AppKit
+import FileDrawerCore
+
+/// 轮询鼠标位置，把「顶部热区悬停」与「指针是否在面板内」翻译成状态机事件。
+///
+/// 不使用全局鼠标监听，避免触发辅助功能权限；也不创建覆盖菜单栏的窗口，
+/// 因此不会拦截用户点击。
+@MainActor
+final class HoverMonitor: NSObject {
+    private let panelController: PanelController
+    private var machine = PanelStateMachine()
+    private var timer: Timer?
+
+    private var lastInHotZone = false
+    private var lastInsidePanel = false
+
+    private let tickInterval: TimeInterval = 0.05
+    private let hotZoneWidth: CGFloat = 260
+    private let hotZoneHeight: CGFloat = 6
+
+    init(panelController: PanelController) {
+        self.panelController = panelController
+        super.init()
+    }
+
+    func start() {
+        guard timer == nil else { return }
+
+        let timer = Timer(
+            timeInterval: tickInterval,
+            target: self,
+            selector: #selector(tickSelector),
+            userInfo: nil,
+            repeats: true
+        )
+        RunLoop.main.add(timer, forMode: .common)
+        self.timer = timer
+    }
+
+    func stop() {
+        timer?.invalidate()
+        timer = nil
+    }
+
+    /// 拖放、预览、菜单开始时调用，暂停自动收起。
+    func beginInteraction() {
+        apply(machine.handle(.interactionBegan, at: now))
+    }
+
+    /// 对应的结束调用，恢复收起规则。
+    func endInteraction() {
+        apply(machine.handle(.interactionEnded, at: now))
+    }
+
+    private var now: TimeInterval {
+        ProcessInfo.processInfo.systemUptime
+    }
+
+    private var hotZone: CGRect {
+        guard let screen = NSScreen.main else { return .zero }
+        let frame = screen.frame
+        return CGRect(
+            x: frame.midX - hotZoneWidth / 2,
+            y: frame.maxY - hotZoneHeight,
+            width: hotZoneWidth,
+            height: hotZoneHeight
+        )
+    }
+
+    @objc private func tickSelector() {
+        tick()
+    }
+
+    private func tick() {
+        let timestamp = now
+        let mouse = NSEvent.mouseLocation
+
+        let inHotZone = hotZone.contains(mouse)
+        if inHotZone != lastInHotZone {
+            lastInHotZone = inHotZone
+            apply(machine.handle(inHotZone ? .hoverBegan : .hoverEnded, at: timestamp))
+        }
+
+        let insidePanel = panelController.isVisible
+            && (panelController.panelFrame.contains(mouse) || inHotZone)
+        if insidePanel != lastInsidePanel {
+            lastInsidePanel = insidePanel
+            apply(
+                machine.handle(
+                    insidePanel ? .pointerEnteredPanel : .pointerExitedPanel,
+                    at: timestamp
+                )
+            )
+        }
+
+        apply(machine.handle(.timeAdvanced(timestamp), at: timestamp))
+    }
+
+    private func apply(_ actions: [PanelAction]) {
+        for action in actions {
+            switch action {
+            case .show:
+                panelController.showWithoutFocus()
+            case .hide(let returnFocus):
+                panelController.hide(returnFocus: returnFocus)
+            case .focusSearchField:
+                break // 搜索框在 05 号票加入
+            }
+        }
+    }
+}
