@@ -48,6 +48,8 @@ final class BrowserView: NSView {
     private var searchMatches: [SearchMatch] = []
 
     private var previewURLs: [URL] = []
+    private var previewKeyMonitor: Any?
+    private var previewKeyBox: PreviewKeyBox?
 
     /// 预览或右键菜单开始/结束时通知外层暂停自动收起。
     var onInteractionChange: ((Bool) -> Void)?
@@ -57,6 +59,7 @@ final class BrowserView: NSView {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         build()
+        installPreviewKeyMonitor()
     }
 
     @available(*, unavailable)
@@ -487,7 +490,7 @@ final class BrowserView: NSView {
         guard let panel = QLPreviewPanel.shared() else { return }
 
         if panel.isVisible {
-            panel.orderOut(nil)
+            closePreview()
         } else {
             previewSelection()
         }
@@ -498,8 +501,42 @@ final class BrowserView: NSView {
         guard !urls.isEmpty, let panel = QLPreviewPanel.shared() else { return }
 
         previewURLs = urls
+        previewKeyBox?.isPreviewVisible = true
+        NSApp.activate()
         panel.reloadData()
         panel.makeKeyAndOrderFront(nil)
+    }
+
+    /// 关闭预览并恢复抽屉的键盘焦点。
+    private func closePreview() {
+        guard let panel = QLPreviewPanel.shared(), panel.isVisible else { return }
+
+        previewKeyBox?.isPreviewVisible = false
+        panel.orderOut(nil)
+        onInteractionChange?(false)
+
+        if let window, window.isVisible {
+            window.makeKey()
+        }
+    }
+
+    /// 预览可见时优先吞掉空格与 Esc，避免按键被抽屉或其他窗口接走。
+    private func installPreviewKeyMonitor() {
+        guard previewKeyMonitor == nil else { return }
+
+        let box = PreviewKeyBox()
+        box.browser = self
+        previewKeyBox = box
+
+        previewKeyMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
+            guard box.isPreviewVisible else { return event }
+            guard event.keyCode == 49 || event.keyCode == 53 else { return event }
+
+            Task { @MainActor in
+                box.browser?.closePreview()
+            }
+            return nil
+        }
     }
 
     @objc private func menuOpen() {
@@ -580,6 +617,7 @@ extension BrowserView {
         MainActor.assumeIsolated {
             panel.dataSource = nil
             panel.delegate = nil
+            previewKeyBox?.isPreviewVisible = false
             onInteractionChange?(false)
 
             // 预览关闭后收回键盘焦点，让下一次 Esc 能收起抽屉。
@@ -588,6 +626,12 @@ extension BrowserView {
             }
         }
     }
+}
+
+/// 让按键监视闭包跨 actor 传递预览可见状态。
+private final class PreviewKeyBox: @unchecked Sendable {
+    weak var browser: BrowserView?
+    var isPreviewVisible = false
 }
 
 extension BrowserView: @preconcurrency QLPreviewPanelDataSource {
