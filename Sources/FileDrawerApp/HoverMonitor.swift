@@ -51,6 +51,11 @@ final class HoverMonitor: NSObject {
         apply(machine.handle(.interactionEnded, at: now))
     }
 
+    /// 全局快捷键按下。
+    func hotkeyPressed() {
+        apply(machine.handle(.hotkeyPressed, at: now))
+    }
+
     private var now: TimeInterval {
         ProcessInfo.processInfo.systemUptime
     }
@@ -105,12 +110,16 @@ final class HoverMonitor: NSObject {
     private func apply(_ actions: [PanelAction]) {
         for action in actions {
             switch action {
-            case .show:
-                panelController.showWithoutFocus()
+            case .show(let stealFocus):
+                if stealFocus {
+                    panelController.show()
+                } else {
+                    panelController.showWithoutFocus()
+                }
             case .hide(let returnFocus):
                 panelController.hide(returnFocus: returnFocus)
             case .focusSearchField:
-                break // 搜索框在 05 号票加入
+                panelController.focusSearchField()
             }
         }
     }

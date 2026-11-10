@@ -6,6 +6,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusItem: NSStatusItem?
     private var panelController: PanelController?
     private var hoverMonitor: HoverMonitor?
+    private var hotkeyCenter: HotkeyCenter?
     private var library: FolderLibrary?
     private let store: StateStore
     private var saveWorkItem: DispatchWorkItem?
@@ -26,11 +27,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         self.library = library
         let panel = PanelController(contentView: rootView)
+        panel.focusSearchHandler = { [weak rootView] in
+            rootView?.focusSearchField()
+        }
         panelController = panel
 
         let monitor = HoverMonitor(panelController: panel)
         monitor.start()
         hoverMonitor = monitor
+
+        let hotkey = HotkeyCenter { [weak self] in
+            self?.hoverMonitor?.hotkeyPressed()
+        }
+        hotkeyCenter = hotkey
+        if !hotkey.registerDefault() {
+            presentHotkeyFailure()
+        }
 
         installStatusItem()
     }
@@ -73,8 +85,21 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    private func installStatusItem() {
-        let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+    private func presentHotkeyFailure() {
+        NSApp.activate()
+
+        let alert = NSAlert()
+        alert.messageText = "全局快捷键注册失败"
+        alert.informativeText = """
+        Control + Option + F 可能已被其他应用占用。
+        请退出占用该快捷键的应用后重新启动文件抽屉；快捷键自定义将在后续版本提供。
+        """
+        alert.alertStyle = .warning
+        alert.addButton(withTitle: "知道了")
+        alert.runModal()
+    }
+
+    private func installStatusItem() {        let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         item.button?.image = NSImage(
             systemSymbolName: "tray.full",
             accessibilityDescription: AppMetadata.displayName

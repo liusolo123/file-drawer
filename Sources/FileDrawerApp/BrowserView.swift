@@ -23,6 +23,7 @@ final class BrowserView: NSView {
 
     private let backButton = NSButton()
     private let pathLabel = NSTextField(labelWithString: "")
+    private let searchField = NSSearchField()
     private let noticeLabel = NSTextField(labelWithString: "")
     private let tableView = NSTableView()
     private let scrollView = NSScrollView()
@@ -80,6 +81,12 @@ final class BrowserView: NSView {
         show(folder: updated)
     }
 
+    /// 把键盘焦点放进搜索框。
+    func focusSearchField() {
+        guard let window else { return }
+        window.makeFirstResponder(searchField)
+    }
+
     private func build() {
         let configuration = NSImage.SymbolConfiguration(pointSize: 15, weight: .medium)
         backButton.image = NSImage(
@@ -111,11 +118,16 @@ final class BrowserView: NSView {
         noticeLabel.textColor = .secondaryLabelColor
         noticeLabel.isHidden = true
 
-        let header = NSStackView(views: [headerRow, noticeLabel])
+        searchField.placeholderString = "搜索当前常用文件夹"
+        searchField.font = .systemFont(ofSize: 12)
+        searchField.translatesAutoresizingMaskIntoConstraints = false
+
+        let header = NSStackView(views: [headerRow, searchField, noticeLabel])
         header.orientation = .vertical
         header.alignment = .leading
-        header.spacing = 2
+        header.spacing = 4
         header.translatesAutoresizingMaskIntoConstraints = false
+        searchField.widthAnchor.constraint(equalTo: header.widthAnchor).isActive = true
 
         let divider = NSBox()
         divider.boxType = .separator

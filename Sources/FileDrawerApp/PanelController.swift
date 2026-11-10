@@ -33,6 +33,9 @@ final class PanelController: NSObject, NSWindowDelegate {
     var isVisible: Bool { panel.isVisible }
     var panelFrame: CGRect { panel.frame }
 
+    /// 由外层注入：把键盘焦点放进搜索框。
+    var focusSearchHandler: (() -> Void)?
+
     init(contentView: NSView) {
         panel = DrawerPanel(
             contentRect: CGRect(x: 0, y: 0, width: 720, height: 440),
@@ -63,6 +66,13 @@ final class PanelController: NSObject, NSWindowDelegate {
     /// 悬停打开：只把面板前置，不激活应用、不抢键盘焦点。
     func showWithoutFocus() {
         present(activating: false)
+    }
+
+    /// 把焦点放进搜索框。延后一拍，确保窗口已经成为键盘窗口。
+    func focusSearchField() {
+        DispatchQueue.main.async { [weak self] in
+            self?.focusSearchHandler?()
+        }
     }
 
     func hide(returnFocus: Bool? = nil) {

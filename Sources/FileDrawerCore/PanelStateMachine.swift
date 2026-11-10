@@ -26,6 +26,8 @@ public enum PanelEvent: Equatable, Sendable {
     case focusEntered
     /// 点击面板外部或按 Esc。
     case dismiss
+    /// 全局快捷键。
+    case hotkeyPressed
 }
 
 public enum PanelAction: Equatable, Sendable {
@@ -127,6 +129,18 @@ public struct PanelStateMachine: Sendable {
         case .dismiss:
             guard !isHidden else { return [] }
             return hide(returnFocus: hadFocus)
+
+        case .hotkeyPressed:
+            switch state {
+            case .hidden, .hoverArmed:
+                state = .visible
+                hadFocus = true
+                return [.show(stealFocus: true), .focusSearchField]
+            case .visible, .hidePending:
+                return hide(returnFocus: hadFocus)
+            case .interactionHold:
+                return []
+            }
         }
     }
 

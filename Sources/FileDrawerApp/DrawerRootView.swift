@@ -49,6 +49,11 @@ final class DrawerRootView: NSView {
         }
     }
 
+    /// 把键盘焦点放进搜索框（快捷键唤出时使用）。
+    func focusSearchField() {
+        browser.focusSearchField()
+    }
+
     private func build() {
         contentHost.translatesAutoresizingMaskIntoConstraints = false
 

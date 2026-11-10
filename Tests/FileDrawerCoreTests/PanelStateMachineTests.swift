@@ -132,4 +132,40 @@ struct PanelStateMachineTests {
         #expect(machine.handle(.timeAdvanced(1.0), at: 1.0).isEmpty)
         #expect(machine.state == .hidden)
     }
+
+    @Test("隐藏时按快捷键展开并聚焦搜索框")
+    func hotkeyShowsAndFocusesSearchField() {
+        var machine = PanelStateMachine()
+
+        let actions = machine.handle(.hotkeyPressed, at: 0)
+
+        #expect(actions == [.show(stealFocus: true), .focusSearchField])
+        #expect(machine.state == .visible)
+    }
+
+    @Test("可见时再按快捷键收起并交还焦点")
+    func hotkeyHidesAndReturnsFocus() {
+        var machine = PanelStateMachine()
+        _ = machine.handle(.hotkeyPressed, at: 0)
+
+        #expect(machine.handle(.hotkeyPressed, at: 1.0) == [.hide(returnFocus: true)])
+        #expect(machine.state == .hidden)
+    }
+
+    @Test("悬停展开且从未获得焦点时，快捷键收起不夺焦点")
+    func hotkeyHideDoesNotReturnFocusWhenNeverFocused() {
+        var machine = visibleMachine()
+
+        #expect(machine.handle(.hotkeyPressed, at: 1.0) == [.hide(returnFocus: false)])
+    }
+
+    @Test("交互保持期间忽略快捷键")
+    func hotkeyIsIgnoredDuringInteractionHold() {
+        var machine = visibleMachine()
+        _ = machine.handle(.pointerEnteredPanel, at: 0.26)
+        _ = machine.handle(.interactionBegan, at: 0.3)
+
+        #expect(machine.handle(.hotkeyPressed, at: 0.4).isEmpty)
+        #expect(machine.state == .interactionHold)
+    }
 }
