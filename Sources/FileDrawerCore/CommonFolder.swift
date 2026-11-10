@@ -32,19 +32,23 @@ public struct CommonFolder: Codable, Equatable, Identifiable, Sendable {
     public var status: FolderStatus
     /// 相对于该文件夹根目录的「浏览位置」，空数组表示根目录本身。
     public var browsingPath: [String]
+    /// 每个「常用文件夹」独立记住的排序规则。
+    public var sortRule: SortRule
 
     public init(
         id: UUID = UUID(),
         displayName: String,
         bookmark: Data,
         status: FolderStatus = .available,
-        browsingPath: [String] = []
+        browsingPath: [String] = [],
+        sortRule: SortRule = .default
     ) {
         self.id = id
         self.displayName = displayName
         self.bookmark = bookmark
         self.status = status
         self.browsingPath = browsingPath
+        self.sortRule = sortRule
     }
 
     public var isAvailable: Bool { status == .available }
@@ -55,9 +59,10 @@ public struct CommonFolder: Codable, Equatable, Identifiable, Sendable {
         case bookmark
         case status
         case browsingPath
+        case sortRule
     }
 
-    /// 早期状态文件没有 `browsingPath`，按根目录处理。
+    /// 早期状态文件没有 `browsingPath` / `sortRule`，按默认值处理。
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(UUID.self, forKey: .id)
@@ -65,5 +70,6 @@ public struct CommonFolder: Codable, Equatable, Identifiable, Sendable {
         bookmark = try container.decode(Data.self, forKey: .bookmark)
         status = try container.decodeIfPresent(FolderStatus.self, forKey: .status) ?? .available
         browsingPath = try container.decodeIfPresent([String].self, forKey: .browsingPath) ?? []
+        sortRule = try container.decodeIfPresent(SortRule.self, forKey: .sortRule) ?? .default
     }
 }

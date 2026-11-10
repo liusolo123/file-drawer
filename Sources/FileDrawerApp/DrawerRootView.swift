@@ -54,6 +54,11 @@ final class DrawerRootView: NSView {
         browser.focusSearchField()
     }
 
+    /// 全局设置变化时同步到浏览列表。
+    func setShowsHiddenFiles(_ value: Bool) {
+        browser.setShowsHiddenFiles(value)
+    }
+
     private func build() {
         contentHost.translatesAutoresizingMaskIntoConstraints = false
 

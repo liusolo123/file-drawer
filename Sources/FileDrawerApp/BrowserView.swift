@@ -24,6 +24,7 @@ final class BrowserView: NSView {
     private let backButton = NSButton()
     private let pathLabel = NSTextField(labelWithString: "")
     private let searchField = NSSearchField()
+    private let sortButton = NSPopUpButton()
     private let noticeLabel = NSTextField(labelWithString: "")
     private let tableView = NSTableView()
     private let scrollView = NSScrollView()
@@ -32,6 +33,7 @@ final class BrowserView: NSView {
     private var currentFolder: CommonFolder?
     private var currentURL: URL?
     private var entries: [DirectoryEntry] = []
+    private var showsHiddenFiles = false
 
     init(library: FolderLibrary) {
         self.library = library
@@ -49,6 +51,7 @@ final class BrowserView: NSView {
     func show(folder: CommonFolder) {
         currentFolder = folder
         noticeLabel.isHidden = true
+        selectSortItem(for: folder.sortRule)
 
         guard folder.status == .available else {
             presentMessage(folder.status.localizedDescription)
@@ -87,6 +90,16 @@ final class BrowserView: NSView {
         window.makeFirstResponder(searchField)
     }
 
+    /// 隐藏文件开关变化时刷新当前列表。
+    func setShowsHiddenFiles(_ value: Bool) {
+        guard showsHiddenFiles != value else { return }
+        showsHiddenFiles = value
+
+        if currentFolder != nil {
+            refresh()
+        }
+    }
+
     private func build() {
         let configuration = NSImage.SymbolConfiguration(pointSize: 15, weight: .medium)
         backButton.image = NSImage(
@@ -109,7 +122,7 @@ final class BrowserView: NSView {
         pathLabel.lineBreakMode = .byTruncatingMiddle
         pathLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 
-        let headerRow = NSStackView(views: [backButton, pathLabel])
+        let headerRow = NSStackView(views: [backButton, pathLabel, sortButton])
         headerRow.orientation = .horizontal
         headerRow.alignment = .centerY
         headerRow.spacing = 6
@@ -121,6 +134,20 @@ final class BrowserView: NSView {
         searchField.placeholderString = "搜索当前常用文件夹"
         searchField.font = .systemFont(ofSize: 12)
         searchField.translatesAutoresizingMaskIntoConstraints = false
+
+        sortButton.addItems(withTitles: [
+            SortRule(key: .name, ascending: true).displayName,
+            SortRule(key: .name, ascending: false).displayName,
+            SortRule(key: .modified, ascending: true).displayName,
+            SortRule(key: .modified, ascending: false).displayName
+        ])
+        sortButton.font = .systemFont(ofSize: 11)
+        sortButton.bezelStyle = .inline
+        sortButton.target = self
+        sortButton.action = #selector(sortChanged)
+        sortButton.translatesAutoresizingMaskIntoConstraints = false
+        sortButton.setContentHuggingPriority(.required, for: .horizontal)
+        sortButton.widthAnchor.constraint(equalToConstant: 108).isActive = true
 
         let header = NSStackView(views: [headerRow, searchField, noticeLabel])
         header.orientation = .vertical
@@ -211,8 +238,14 @@ final class BrowserView: NSView {
     private func loadEntries() {
         guard let currentURL else { return }
 
+        let rule = currentFolderSnapshot()?.sortRule ?? .default
+
         do {
-            entries = try browser.contents(of: currentURL)
+            entries = try browser.contents(
+                of: currentURL,
+                sortRule: rule,
+                showHiddenFiles: showsHiddenFiles
+            )
             tableView.reloadData()
             placeholder.stringValue = "这个文件夹是空的"
             placeholder.isHidden = !entries.isEmpty
@@ -237,6 +270,44 @@ final class BrowserView: NSView {
         return library.folders.first(where: { $0.id == currentFolder.id }) ?? currentFolder
     }
 
+    // MARK: - 排序
+
+    private func selectSortItem(for rule: SortRule) {
+        let index: Int
+
+        switch (rule.key, rule.ascending) {
+        case (.name, true):
+            index = 0
+        case (.name, false):
+            index = 1
+        case (.modified, true):
+            index = 2
+        case (.modified, false):
+            index = 3
+        }
+
+        sortButton.selectItem(at: index)
+    }
+
+    @objc private func sortChanged() {
+        guard let folder = currentFolderSnapshot() else { return }
+
+        let rule: SortRule
+        switch sortButton.indexOfSelectedItem {
+        case 0:
+            rule = SortRule(key: .name, ascending: true)
+        case 1:
+            rule = SortRule(key: .name, ascending: false)
+        case 2:
+            rule = SortRule(key: .modified, ascending: true)
+        default:
+            rule = SortRule(key: .modified, ascending: false)
+        }
+
+        library.setSortRule(rule, for: folder.id)
+        show(folder: currentFolderSnapshot() ?? folder)
+    }
+
     // MARK: - 导航
 
     @objc private func goBack() {
@@ -258,6 +329,12 @@ final class BrowserView: NSView {
         }
 
         let entry = entries[row]
+
+        if entry.isPackage {
+            NSWorkspace.shared.open(entry.url)
+            return
+        }
+
         guard entry.isBrowsable else { return }
 
         var path = library.browsingPath(for: folder.id)
@@ -296,6 +373,7 @@ extension BrowserView: NSTableViewDataSource, NSTableViewDelegate {
     }
 
     private func symbolName(for entry: DirectoryEntry) -> String {
+        if entry.isSymbolicLink { return "link" }
         if entry.isBrowsable { return "folder" }
         if entry.isPackage { return "shippingbox" }
         return "doc"

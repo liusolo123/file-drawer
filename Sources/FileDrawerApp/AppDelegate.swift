@@ -8,6 +8,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var hoverMonitor: HoverMonitor?
     private var hotkeyCenter: HotkeyCenter?
     private var library: FolderLibrary?
+    private var rootView: DrawerRootView?
+    private var hiddenFilesMenuItem: NSMenuItem?
+    private var settings: DrawerSettings = .default
     private let store: StateStore
     private var saveWorkItem: DispatchWorkItem?
 
@@ -17,15 +20,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        let library = FolderLibrary(state: loadState())
+        let initialState = loadState()
+        settings = initialState.settings
+
+        let library = FolderLibrary(state: initialState)
         library.onChange = { [weak self] in self?.scheduleSave() }
 
         let rootView = DrawerRootView(library: library)
         rootView.onModalStateChange = { [weak self] active in
             self?.panelController?.setModalActive(active)
         }
+        rootView.setShowsHiddenFiles(settings.showsHiddenFiles)
 
         self.library = library
+        self.rootView = rootView
         let panel = PanelController(contentView: rootView)
         panel.focusSearchHandler = { [weak rootView] in
             rootView?.focusSearchField()
@@ -78,8 +86,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func saveNow() {
         guard let library else { return }
+
+        var state = library.state
+        state.settings = settings
+
         do {
-            try store.save(library.state)
+            try store.save(state)
         } catch {
             NSLog("文件抽屉：保存状态失败：\(error)")
         }
@@ -115,6 +127,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         open.target = self
         menu.addItem(open)
         menu.addItem(.separator())
+
+        let hiddenFiles = NSMenuItem(
+            title: "显示隐藏文件",
+            action: #selector(toggleHiddenFiles),
+            keyEquivalent: ""
+        )
+        hiddenFiles.target = self
+        hiddenFiles.state = settings.showsHiddenFiles ? .on : .off
+        menu.addItem(hiddenFiles)
+        hiddenFilesMenuItem = hiddenFiles
+
+        menu.addItem(.separator())
         let quit = NSMenuItem(
             title: "退出\(AppMetadata.displayName)",
             action: #selector(quit),
@@ -125,6 +149,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         item.menu = menu
         statusItem = item
+    }
+
+    @objc private func toggleHiddenFiles() {
+        settings.showsHiddenFiles.toggle()
+        hiddenFilesMenuItem?.state = settings.showsHiddenFiles ? .on : .off
+        rootView?.setShowsHiddenFiles(settings.showsHiddenFiles)
+        scheduleSave()
     }
 
     @objc private func togglePanel() {

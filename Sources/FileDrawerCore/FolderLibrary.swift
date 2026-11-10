@@ -101,13 +101,23 @@ public final class FolderLibrary {
     }
 
     /// 更新「浏览位置」。与当前值相同时不触发保存。
-    public func setBrowsingPath(_ path: [String], for id: UUID) {
-        guard let index = folders.firstIndex(where: { $0.id == id }),
+    public func setBrowsingPath(_ path: [String], for id: UUID) {        guard let index = folders.firstIndex(where: { $0.id == id }),
               folders[index].browsingPath != path else {
             return
         }
 
         folders[index].browsingPath = path
+        onChange?()
+    }
+
+    /// 更新某个「常用文件夹」的排序规则。
+    public func setSortRule(_ rule: SortRule, for id: UUID) {
+        guard let index = folders.firstIndex(where: { $0.id == id }),
+              folders[index].sortRule != rule else {
+            return
+        }
+
+        folders[index].sortRule = rule
         onChange?()
     }
 

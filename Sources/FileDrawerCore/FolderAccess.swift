@@ -19,7 +19,7 @@ public protocol FolderAccess: Sendable {
     func resolveBookmark(_ data: Data) throws -> ResolvedFolder
     func displayName(for url: URL) -> String
     func status(of url: URL) -> FolderStatus
-    func contents(of url: URL) throws -> [DirectoryEntry]
+    func contents(of url: URL, includingHidden: Bool) throws -> [DirectoryEntry]
 }
 
 public struct LocalFolderAccess: FolderAccess {
@@ -88,18 +88,24 @@ public struct LocalFolderAccess: FolderAccess {
         return .available
     }
 
-    public func contents(of url: URL) throws -> [DirectoryEntry] {
+    public func contents(of url: URL, includingHidden: Bool) throws -> [DirectoryEntry] {
         let keys: [URLResourceKey] = [
             .nameKey,
             .isDirectoryKey,
             .isPackageKey,
+            .isSymbolicLinkKey,
             .contentModificationDateKey
         ]
+
+        var options: FileManager.DirectoryEnumerationOptions = []
+        if !includingHidden {
+            options.insert(.skipsHiddenFiles)
+        }
 
         let urls = try FileManager.default.contentsOfDirectory(
             at: url,
             includingPropertiesForKeys: keys,
-            options: [.skipsHiddenFiles]
+            options: options
         )
 
         return urls.compactMap { child in
@@ -112,6 +118,7 @@ public struct LocalFolderAccess: FolderAccess {
                 name: values.name ?? child.lastPathComponent,
                 isDirectory: values.isDirectory ?? false,
                 isPackage: values.isPackage ?? false,
+                isSymbolicLink: values.isSymbolicLink ?? false,
                 modifiedAt: values.contentModificationDate
             )
         }
