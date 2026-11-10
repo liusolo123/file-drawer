@@ -51,3 +51,16 @@ Parent: `.scratch/file-drawer-v1/spec.md`
 - 测试与构建改用各自独立的 scratch 目录，并加 `scripts/test.sh` 处理 SwiftPM 宏插件缓存异常。
 
 用户复测通过。交互保持的 UI 接入仍待 08/09。
+
+### 2026-11-10 顶边命中修复
+
+用户反馈：从屏幕正中竖直向上移动到刘海位置无法唤出，需要左右移动一点才行。
+
+探测确认：指针贴到屏幕最顶边时 `NSEvent.mouseLocation.y` 恰好等于 `screen.frame.maxY`（实测 956.0）。`CGRect.contains` 不包含 maxY 边界，因此正好落在判定之外。
+
+修复：
+
+- 新增 `HoverGeometry.contains(_:in:)`，四条边都视为命中，替代 `CGRect.contains`。
+- 新增「指针贴到屏幕顶边时仍算命中」用例，覆盖 minX/minY/maxX 与顶边。
+- 端到端验证：脚本把指针移到顶部正中，0.6s 后出现抽屉窗口；移开后 0.9s 归零；再次悬停可复现。
+

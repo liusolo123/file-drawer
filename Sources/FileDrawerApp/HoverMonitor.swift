@@ -85,7 +85,7 @@ final class HoverMonitor: NSObject {
         let mouse = NSEvent.mouseLocation
         let zone = hotZone
 
-        let inHotZone = zone.contains(mouse)
+        let inHotZone = HoverGeometry.contains(mouse, in: zone)
         if inHotZone != lastInHotZone {
             lastInHotZone = inHotZone
             apply(machine.handle(inHotZone ? .hoverBegan : .hoverEnded, at: timestamp))
@@ -93,7 +93,7 @@ final class HoverMonitor: NSObject {
 
         let insidePanel = panelController.isVisible
             && (panelController.panelFrame.contains(mouse)
-                || zone.contains(mouse))
+                || HoverGeometry.contains(mouse, in: zone))
         if insidePanel != lastInsidePanel {
             lastInsidePanel = insidePanel
             apply(

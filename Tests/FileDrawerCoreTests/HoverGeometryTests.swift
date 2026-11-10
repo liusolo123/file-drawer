@@ -51,6 +51,24 @@ struct HoverGeometryTests {
         #expect(zone.minX == 0)
     }
 
+    @Test("指针贴到屏幕顶边时仍算命中")
+    func includesExactTopEdge() {
+        let screen = CGRect(x: 0, y: 0, width: 1470, height: 956)
+        let visible = CGRect(x: 0, y: 63, width: 1470, height: 860)
+
+        let zone = HoverGeometry.hotZone(
+            screenFrame: screen,
+            visibleFrame: visible,
+            width: 320
+        )
+
+        // 指针贴顶时 NSEvent.mouseLocation.y 恰好等于屏幕顶边。
+        #expect(HoverGeometry.contains(CGPoint(x: screen.midX, y: screen.maxY), in: zone))
+        #expect(HoverGeometry.contains(CGPoint(x: zone.minX, y: zone.minY), in: zone))
+        #expect(HoverGeometry.contains(CGPoint(x: zone.maxX, y: zone.minY), in: zone))
+        #expect(!HoverGeometry.contains(CGPoint(x: zone.midX, y: zone.minY - 1), in: zone))
+    }
+
     @Test("以给定屏幕为基准，副屏原点不为零时同样居中")
     func centersOnSecondaryScreen() {
         let screen = CGRect(x: 1512, y: 0, width: 1920, height: 1080)
