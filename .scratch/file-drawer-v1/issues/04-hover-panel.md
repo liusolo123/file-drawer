@@ -52,6 +52,19 @@ Parent: `.scratch/file-drawer-v1/spec.md`
 
 用户复测通过。交互保持的 UI 接入仍待 08/09。
 
+### 2026-11-11 热区宽度改为刘海缺口宽度
+
+用户反馈：热区过大，鼠标停在刘海两侧的菜单栏图标上也会唤出抽屉。
+
+实测：刘海缺口 x 646–825，宽 179pt；原热区固定 320pt，两侧各多出约 70pt，正好压住图标区。
+
+修复：
+
+- 新增 `HoverGeometry.hotZoneWidth(leftAuxiliary:rightAuxiliary:fallback:)`：有刘海时取缺口实际宽度，无刘海或缺口异常时回退 160pt。
+- `HoverMonitor` 从 `NSScreen.auxiliaryTopLeftArea` / `auxiliaryTopRightArea` 取缺口范围。
+- 新增宽度用例；端到端验证：x=830（图标区）悬停 0.6s 不唤出，正中央唤出，移开后收起。
+
+
 ### 2026-11-10 顶边命中修复
 
 用户反馈：从屏幕正中竖直向上移动到刘海位置无法唤出，需要左右移动一点才行。

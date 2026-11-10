@@ -15,7 +15,6 @@ final class HoverMonitor: NSObject {
     private var lastInsidePanel = false
 
     private let tickInterval: TimeInterval = 0.05
-    private let hotZoneWidth: CGFloat = 320
 
     init(panelController: PanelController) {
         self.panelController = panelController
@@ -66,6 +65,15 @@ final class HoverMonitor: NSObject {
             screenFrame: screen.frame,
             visibleFrame: screen.visibleFrame,
             width: hotZoneWidth
+        )
+    }
+
+    /// 刘海屏用刘海缺口宽度，避免压到两侧菜单栏图标。
+    private var hotZoneWidth: CGFloat {
+        guard let screen = activeScreen else { return 160 }
+        return HoverGeometry.hotZoneWidth(
+            leftAuxiliary: screen.auxiliaryTopLeftArea,
+            rightAuxiliary: screen.auxiliaryTopRightArea
         )
     }
 

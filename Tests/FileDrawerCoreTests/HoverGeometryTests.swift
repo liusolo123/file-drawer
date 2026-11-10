@@ -69,6 +69,21 @@ struct HoverGeometryTests {
         #expect(!HoverGeometry.contains(CGPoint(x: zone.midX, y: zone.minY - 1), in: zone))
     }
 
+    @Test("热区宽度取刘海缺口，没有刘海时用回退值")
+    func hotZoneWidthMatchesNotch() {
+        let left = CGRect(x: 0, y: 924, width: 646, height: 32)
+        let right = CGRect(x: 825, y: 924, width: 645, height: 32)
+
+        #expect(HoverGeometry.hotZoneWidth(leftAuxiliary: left, rightAuxiliary: right) == 179)
+        #expect(HoverGeometry.hotZoneWidth(leftAuxiliary: nil, rightAuxiliary: nil) == 160)
+        #expect(
+            HoverGeometry.hotZoneWidth(
+                leftAuxiliary: left,
+                rightAuxiliary: CGRect(x: 646, y: 924, width: 10, height: 32)
+            ) == 160
+        )
+    }
+
     @Test("以给定屏幕为基准，副屏原点不为零时同样居中")
     func centersOnSecondaryScreen() {
         let screen = CGRect(x: 1512, y: 0, width: 1920, height: 1080)

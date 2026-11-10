@@ -32,4 +32,20 @@ public enum HoverGeometry {
         point.x >= zone.minX && point.x <= zone.maxX
             && point.y >= zone.minY && point.y <= zone.maxY
     }
+
+    /// 热区宽度：刘海屏取刘海缺口的实际宽度，普通屏幕取 `fallback`。
+    ///
+    /// 用整屏居中固定宽度会压到两侧的菜单栏图标，导致正常点图标时误唤出。
+    public static func hotZoneWidth(
+        leftAuxiliary: CGRect?,
+        rightAuxiliary: CGRect?,
+        fallback: CGFloat = 160
+    ) -> CGFloat {
+        guard let left = leftAuxiliary, let right = rightAuxiliary else {
+            return fallback
+        }
+
+        let gap = right.minX - left.maxX
+        return gap > 40 ? gap : fallback
+    }
 }
