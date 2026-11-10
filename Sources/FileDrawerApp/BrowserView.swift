@@ -20,6 +20,11 @@ final class BrowserView: NSView {
 
     private let library: FolderLibrary
     private let browser = DirectoryBrowser()
+    private let searchEngine = SearchEngine()
+    private let searchQueue = DispatchQueue(
+        label: "com.liusolo.filedrawer.search",
+        qos: .userInitiated
+    )
 
     private let backButton = NSButton()
     private let pathLabel = NSTextField(labelWithString: "")
@@ -35,6 +40,12 @@ final class BrowserView: NSView {
     private var entries: [DirectoryEntry] = []
     private var showsHiddenFiles = false
 
+    private var searchDebounce: DispatchWorkItem?
+    private var searchCancellation: SearchCancellation?
+    private var searchGeneration = 0
+    private var isShowingSearchResults = false
+    private var searchMatches: [SearchMatch] = []
+
     init(library: FolderLibrary) {
         self.library = library
         super.init(frame: .zero)
@@ -49,6 +60,8 @@ final class BrowserView: NSView {
 
     /// 显示指定「常用文件夹」。会按记忆恢复「浏览位置」。
     func show(folder: CommonFolder) {
+        resetSearchState()
+
         currentFolder = folder
         noticeLabel.isHidden = true
         selectSortItem(for: folder.sortRule)
@@ -100,6 +113,98 @@ final class BrowserView: NSView {
         }
     }
 
+    // MARK: - 搜索
+
+    /// 退出搜索状态，恢复普通目录列表由调用方负责。
+    private func resetSearchState() {
+        searchDebounce?.cancel()
+        searchDebounce = nil
+        searchCancellation?.cancel()
+        searchCancellation = nil
+        searchGeneration += 1
+        isShowingSearchResults = false
+        searchMatches = []
+
+        if !searchField.stringValue.isEmpty {
+            searchField.stringValue = ""
+        }
+    }
+
+    private func scheduleSearch() {
+        searchDebounce?.cancel()
+        searchDebounce = nil
+        searchCancellation?.cancel()
+        searchCancellation = nil
+        searchGeneration += 1
+
+        let generation = searchGeneration
+        let query = searchField.stringValue
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+
+        guard !query.isEmpty else {
+            if let folder = currentFolderSnapshot() {
+                show(folder: folder)
+            }
+            return
+        }
+
+        let work = DispatchWorkItem { [weak self] in
+            self?.startSearch(query: query, generation: generation)
+        }
+        searchDebounce = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15, execute: work)
+    }
+
+    private func startSearch(query: String, generation: Int) {
+        guard let folder = currentFolderSnapshot(),
+              let rootURL = library.resolvedURL(for: folder.id) else {
+            return
+        }
+
+        let cancellation = SearchCancellation()
+        searchCancellation = cancellation
+
+        let rule = folder.sortRule
+        let hidden = showsHiddenFiles
+
+        entries = []
+        searchMatches = []
+        isShowingSearchResults = true
+        tableView.reloadData()
+        placeholder.stringValue = "搜索中…"
+        placeholder.isHidden = false
+
+        searchQueue.async { [weak self] in
+            let matches = (try? SearchEngine().search(
+                query: query,
+                in: rootURL,
+                sortRule: rule,
+                showHiddenFiles: hidden,
+                isCancelled: { cancellation.isCancelled }
+            )) ?? []
+
+            DispatchQueue.main.async {
+                guard let self, self.searchGeneration == generation else { return }
+                self.applySearchResults(matches)
+            }
+        }
+    }
+
+    private func applySearchResults(_ matches: [SearchMatch]) {
+        searchMatches = matches
+        entries = matches.map(\.entry)
+        isShowingSearchResults = true
+        tableView.reloadData()
+
+        if matches.isEmpty {
+            placeholder.stringValue = "没有匹配的项目"
+            placeholder.isHidden = false
+        } else {
+            placeholder.isHidden = true
+            tableView.selectRowIndexes(IndexSet(integer: 0), byExtendingSelection: false)
+        }
+    }
+
     private func build() {
         let configuration = NSImage.SymbolConfiguration(pointSize: 15, weight: .medium)
         backButton.image = NSImage(
@@ -133,6 +238,7 @@ final class BrowserView: NSView {
 
         searchField.placeholderString = "搜索当前常用文件夹"
         searchField.font = .systemFont(ofSize: 12)
+        searchField.delegate = self
         searchField.translatesAutoresizingMaskIntoConstraints = false
 
         sortButton.addItems(withTitles: [
@@ -313,6 +419,11 @@ final class BrowserView: NSView {
     @objc private func goBack() {
         guard let folder = currentFolderSnapshot() else { return }
 
+        if isShowingSearchResults || !searchField.stringValue.isEmpty {
+            show(folder: folder)
+            return
+        }
+
         var path = library.browsingPath(for: folder.id)
         guard !path.isEmpty else { return }
 
@@ -330,6 +441,11 @@ final class BrowserView: NSView {
 
         let entry = entries[row]
 
+        if isShowingSearchResults {
+            openSearchResult(entry, folder: folder)
+            return
+        }
+
         if entry.isPackage {
             NSWorkspace.shared.open(entry.url)
             return
@@ -340,6 +456,22 @@ final class BrowserView: NSView {
         var path = library.browsingPath(for: folder.id)
         path.append(entry.name)
         library.setBrowsingPath(path, for: folder.id)
+        show(folder: currentFolderSnapshot() ?? folder)
+    }
+
+    /// 搜索结果里的文件夹：跳到它所在的位置并进入。
+    private func openSearchResult(_ entry: DirectoryEntry, folder: CommonFolder) {
+        if entry.isPackage {
+            NSWorkspace.shared.open(entry.url)
+            return
+        }
+
+        guard entry.isBrowsable,
+              let match = searchMatches.first(where: { $0.entry.id == entry.id }) else {
+            return
+        }
+
+        library.setBrowsingPath(match.relativePath + [entry.name], for: folder.id)
         show(folder: currentFolderSnapshot() ?? folder)
     }
 }
@@ -361,7 +493,21 @@ extension BrowserView: NSTableViewDataSource, NSTableViewDelegate {
             as? EntryCellView ?? EntryCellView(identifier: Self.entryCellIdentifier)
 
         cell.nameLabel.stringValue = entry.name
-        cell.dateLabel.stringValue = entry.modifiedAt.map(Self.dateFormatter.string(from:)) ?? ""
+
+        if isShowingSearchResults, searchMatches.indices.contains(row) {
+            let match = searchMatches[row]
+            cell.dateLabel.stringValue = match.relativePath.isEmpty
+                ? "根目录"
+                : match.relativePath.joined(separator: " / ")
+            cell.dateLabel.lineBreakMode = .byTruncatingHead
+            cell.toolTip = match.entry.url.path
+        } else {
+            cell.dateLabel.stringValue = entry.modifiedAt
+                .map(Self.dateFormatter.string(from:)) ?? ""
+            cell.dateLabel.lineBreakMode = .byTruncatingTail
+            cell.toolTip = nil
+        }
+
         cell.iconView.image = NSImage(
             systemSymbolName: symbolName(for: entry),
             accessibilityDescription: nil
@@ -435,5 +581,12 @@ final class EntryCellView: NSTableCellView {
             dateLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
             dateLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
+    }
+}
+
+extension BrowserView: NSSearchFieldDelegate {
+    func controlTextDidChange(_ obj: Notification) {
+        guard (obj.object as? NSSearchField) === searchField else { return }
+        scheduleSearch()
     }
 }
