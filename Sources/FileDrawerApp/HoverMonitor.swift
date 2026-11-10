@@ -15,8 +15,7 @@ final class HoverMonitor: NSObject {
     private var lastInsidePanel = false
 
     private let tickInterval: TimeInterval = 0.05
-    private let hotZoneWidth: CGFloat = 260
-    private let hotZoneHeight: CGFloat = 6
+    private let hotZoneWidth: CGFloat = 320
 
     init(panelController: PanelController) {
         self.panelController = panelController
@@ -57,14 +56,19 @@ final class HoverMonitor: NSObject {
     }
 
     private var hotZone: CGRect {
-        guard let screen = NSScreen.main else { return .zero }
-        let frame = screen.frame
-        return CGRect(
-            x: frame.midX - hotZoneWidth / 2,
-            y: frame.maxY - hotZoneHeight,
-            width: hotZoneWidth,
-            height: hotZoneHeight
+        guard let screen = activeScreen else { return .zero }
+        return HoverGeometry.hotZone(
+            screenFrame: screen.frame,
+            visibleFrame: screen.visibleFrame,
+            width: hotZoneWidth
         )
+    }
+
+    /// 鼠标所在屏幕，而不是「有键盘焦点的屏幕」。
+    private var activeScreen: NSScreen? {
+        let mouse = NSEvent.mouseLocation
+        return NSScreen.screens.first { NSMouseInRect(mouse, $0.frame, false) }
+            ?? NSScreen.main
     }
 
     @objc private func tickSelector() {
@@ -74,15 +78,17 @@ final class HoverMonitor: NSObject {
     private func tick() {
         let timestamp = now
         let mouse = NSEvent.mouseLocation
+        let zone = hotZone
 
-        let inHotZone = hotZone.contains(mouse)
+        let inHotZone = zone.contains(mouse)
         if inHotZone != lastInHotZone {
             lastInHotZone = inHotZone
             apply(machine.handle(inHotZone ? .hoverBegan : .hoverEnded, at: timestamp))
         }
 
         let insidePanel = panelController.isVisible
-            && (panelController.panelFrame.contains(mouse) || inHotZone)
+            && (panelController.panelFrame.contains(mouse)
+                || zone.contains(mouse))
         if insidePanel != lastInsidePanel {
             lastInsidePanel = insidePanel
             apply(

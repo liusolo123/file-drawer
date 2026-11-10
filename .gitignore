@@ -7,6 +7,7 @@
 # Swift Package Manager
 .build/
 .build-app/
+.build-test/
 .swiftpm/
 Packages/
 # 应用类项目保留 Package.resolved 以锁定依赖版本
