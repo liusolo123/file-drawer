@@ -10,6 +10,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var library: FolderLibrary?
     private var rootView: DrawerRootView?
     private var hiddenFilesMenuItem: NSMenuItem?
+    private var saveFailureItem: NSMenuItem?
+    private var settingsWindowController: SettingsWindowController?
     private var settings: DrawerSettings = .default
     private let store: StateStore
     private var saveWorkItem: DispatchWorkItem?
@@ -65,7 +67,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             self?.hoverMonitor?.hotkeyPressed()
         }
         hotkeyCenter = hotkey
-        if !hotkey.registerDefault() {
+        if !hotkey.register(settings.hotkey) {
             presentHotkeyFailure()
         }
 
@@ -109,8 +111,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         do {
             try store.save(state)
+            saveFailureItem?.isHidden = true
         } catch {
             NSLog("文件抽屉：保存状态失败：\(error)")
+            saveFailureItem?.isHidden = false
         }
     }
 
@@ -120,15 +124,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let alert = NSAlert()
         alert.messageText = "全局快捷键注册失败"
         alert.informativeText = """
-        Control + Option + F 可能已被其他应用占用。
-        请退出占用该快捷键的应用后重新启动文件抽屉；快捷键自定义将在后续版本提供。
+        当前快捷键（\(settings.hotkey.displayName)）可能已被其他应用占用。
+        请在「设置」中更换或禁用快捷键。
         """
         alert.alertStyle = .warning
         alert.addButton(withTitle: "知道了")
         alert.runModal()
     }
 
-    private func installStatusItem() {        let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+    private func installStatusItem() {
+        let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         item.button?.image = NSImage(
             systemSymbolName: "tray.full",
             accessibilityDescription: AppMetadata.displayName
@@ -155,7 +160,26 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         menu.addItem(hiddenFiles)
         hiddenFilesMenuItem = hiddenFiles
 
+        let settingsItem = NSMenuItem(
+            title: "设置…",
+            action: #selector(openSettings),
+            keyEquivalent: ","
+        )
+        settingsItem.target = self
+        menu.addItem(settingsItem)
+
         menu.addItem(.separator())
+
+        let saveFailure = NSMenuItem(
+            title: "状态未保存 — 点此重试",
+            action: #selector(retrySave),
+            keyEquivalent: ""
+        )
+        saveFailure.target = self
+        saveFailure.isHidden = true
+        menu.addItem(saveFailure)
+        saveFailureItem = saveFailure
+
         let quit = NSMenuItem(
             title: "退出\(AppMetadata.displayName)",
             action: #selector(quit),
@@ -169,10 +193,93 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @objc private func toggleHiddenFiles() {
-        settings.showsHiddenFiles.toggle()
-        hiddenFilesMenuItem?.state = settings.showsHiddenFiles ? .on : .off
-        rootView?.setShowsHiddenFiles(settings.showsHiddenFiles)
+        updateShowsHiddenFiles(!settings.showsHiddenFiles)
+    }
+
+    private func updateShowsHiddenFiles(_ value: Bool) {
+        settings.showsHiddenFiles = value
+        hiddenFilesMenuItem?.state = value ? .on : .off
+        rootView?.setShowsHiddenFiles(value)
         scheduleSave()
+    }
+
+    @objc private func openSettings() {
+        let controller: SettingsWindowController
+
+        if let existing = settingsWindowController {
+            existing.refresh(settings: settings, launchAtLogin: LaunchAtLogin.isEnabled)
+            controller = existing
+        } else {
+            let created = SettingsWindowController(
+                settings: settings,
+                stateFileURL: store.fileURL
+            )
+            created.onHotkeyChange = { [weak self] spec in
+                self?.updateHotkey(spec) ?? false
+            }
+            created.onShowsHiddenFilesChange = { [weak self] value in
+                self?.updateShowsHiddenFiles(value)
+            }
+            created.onLaunchAtLoginChange = { [weak self] enabled in
+                self?.updateLaunchAtLogin(enabled) ?? false
+            }
+            created.onResetPanelSize = { [weak self] in
+                self?.resetPanelSize()
+            }
+            created.onRecordingChange = { [weak self] recording in
+                guard let self else { return }
+                if recording {
+                    self.hotkeyCenter?.unregister()
+                } else {
+                    _ = self.hotkeyCenter?.register(self.settings.hotkey)
+                }
+            }
+            settingsWindowController = created
+            controller = created
+        }
+
+        NSApp.activate()
+        controller.showWindow(nil)
+        controller.window?.makeKeyAndOrderFront(nil)
+    }
+
+    private func updateHotkey(_ spec: HotkeySpec) -> Bool {
+        guard let hotkeyCenter else { return false }
+
+        let previous = settings.hotkey
+        guard hotkeyCenter.register(spec) else {
+            _ = hotkeyCenter.register(previous)
+            return false
+        }
+
+        settings.hotkey = spec
+        scheduleSave()
+        return true
+    }
+
+    private func updateLaunchAtLogin(_ enabled: Bool) -> Bool {
+        do {
+            try LaunchAtLogin.set(enabled)
+            return true
+        } catch {
+            let alert = NSAlert()
+            alert.messageText = "无法更改登录启动"
+            alert.informativeText = "\(error.localizedDescription)\n请稍后再试。"
+            alert.alertStyle = .warning
+            alert.addButton(withTitle: "知道了")
+            alert.runModal()
+            return false
+        }
+    }
+
+    private func resetPanelSize() {
+        settings.panelSize = .default
+        panelController?.applySize(.default)
+        scheduleSave()
+    }
+
+    @objc private func retrySave() {
+        saveNow()
     }
 
     @objc private func togglePanel() {

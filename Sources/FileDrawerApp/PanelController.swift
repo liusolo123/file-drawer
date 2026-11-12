@@ -211,6 +211,18 @@ final class PanelController: NSObject, NSWindowDelegate {
         panel.contentView = container
     }
 
+    /// 应用新的尺寸（设置里的「重置面板尺寸」使用）。
+    func applySize(_ size: PanelSize) {
+        desiredSize = size.cgSize
+        guard let screen = targetScreen() else { return }
+
+        let effective = PanelPlacement.clampedSize(desiredSize, in: screen.visibleFrame)
+        panel.setFrame(
+            PanelPlacement.topCenter(panelSize: effective, in: screen.visibleFrame),
+            display: true
+        )
+    }
+
     private func resize(byWidth deltaWidth: CGFloat, height deltaHeight: CGFloat) {
         guard let screen = targetScreen() else { return }
 

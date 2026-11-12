@@ -6,13 +6,17 @@ public struct DrawerSettings: Codable, Equatable, Sendable {
     public var showsHiddenFiles: Bool
     /// 面板的期望尺寸。屏幕放不下时只在显示时夹取。
     public var panelSize: PanelSize
+    /// 全局快捷键配置。
+    public var hotkey: HotkeySpec
 
     public init(
         showsHiddenFiles: Bool = false,
-        panelSize: PanelSize = .default
+        panelSize: PanelSize = .default,
+        hotkey: HotkeySpec = .default
     ) {
         self.showsHiddenFiles = showsHiddenFiles
         self.panelSize = panelSize
+        self.hotkey = hotkey
     }
 
     public static let `default` = DrawerSettings()
@@ -20,6 +24,7 @@ public struct DrawerSettings: Codable, Equatable, Sendable {
     private enum CodingKeys: String, CodingKey {
         case showsHiddenFiles
         case panelSize
+        case hotkey
     }
 
     /// 早期状态文件缺少新字段时按默认值处理。
@@ -28,6 +33,8 @@ public struct DrawerSettings: Codable, Equatable, Sendable {
         showsHiddenFiles = try container.decodeIfPresent(Bool.self, forKey: .showsHiddenFiles)
             ?? false
         panelSize = try container.decodeIfPresent(PanelSize.self, forKey: .panelSize)
+            ?? .default
+        hotkey = try container.decodeIfPresent(HotkeySpec.self, forKey: .hotkey)
             ?? .default
     }
 }
