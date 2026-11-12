@@ -25,6 +25,13 @@ final class DrawerRootView: NSView {
         sidebar.onAddRequested = { [weak self] in self?.presentAddPanel() }
         sidebar.onSelectionChange = { [weak self] folder in self?.showDetail(folder) }
 
+        browser.onModalStateChange = { [weak self] active in
+            self?.onModalStateChange?(active)
+        }
+        browser.onFolderListChanged = { [weak self] in
+            self?.refresh()
+        }
+
         refresh()
     }
 

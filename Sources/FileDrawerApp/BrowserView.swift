@@ -35,6 +35,9 @@ final class BrowserView: NSView {
     private let tableView = DrawerTableView()
     private let scrollView = NSScrollView()
     private let placeholder = NSTextField(wrappingLabelWithString: "")
+    private let recoveryStack = NSStackView()
+    private let recoveryTitle = NSTextField(wrappingLabelWithString: "")
+    private let recoveryBody = NSTextField(wrappingLabelWithString: "")
 
     private var currentFolder: CommonFolder?
     private var currentURL: URL?
@@ -51,8 +54,21 @@ final class BrowserView: NSView {
     private var previewKeyMonitor: Any?
     private var previewKeyBox: PreviewKeyBox?
 
+    private var directorySource: DispatchSourceFileSystemObject?
+    private var reloadWorkItem: DispatchWorkItem?
+
+    private var cloudPollTimer: Timer?
+    private var cloudPendingURLs: [URL] = []
+    private var pendingCloudAction: (() -> Void)?
+
     /// 预览或右键菜单开始/结束时通知外层暂停自动收起。
     var onInteractionChange: ((Bool) -> Void)?
+
+    /// 打开系统选择面板时通知外层暂停自动收起并降低层级。
+    var onModalStateChange: ((Bool) -> Void)?
+
+    /// 入口被移除或改指向后，通知外层刷新侧栏。
+    var onFolderListChanged: (() -> Void)?
 
     init(library: FolderLibrary) {
         self.library = library
@@ -74,15 +90,26 @@ final class BrowserView: NSView {
         currentFolder = folder
         noticeLabel.isHidden = true
         selectSortItem(for: folder.sortRule)
+        hideRecovery()
 
         guard folder.status == .available else {
-            presentMessage(folder.status.localizedDescription)
+            stopWatching()
+            presentRecovery(
+                title: "无法访问「\(folder.displayName)」",
+                message: folder.status.localizedDescription,
+                suggestion: folder.status.recoverySuggestion
+            )
             updatePathLabel()
             return
         }
 
         guard let location = library.resolveBrowsingLocation(for: folder.id) else {
-            presentMessage("无法解析这个文件夹的位置")
+            stopWatching()
+            presentRecovery(
+                title: "无法解析这个文件夹",
+                message: "书签已失效或目录不可访问。",
+                suggestion: "重新选择这个入口指向的文件夹，或移除入口。"
+            )
             updatePathLabel()
             return
         }
@@ -90,6 +117,7 @@ final class BrowserView: NSView {
         currentURL = location.url
         updatePathLabel()
         loadEntries()
+        startWatching(location.url)
 
         if location.didFallBackToRoot {
             noticeLabel.stringValue = "原浏览位置已不存在，已回到根目录"
@@ -288,6 +316,8 @@ final class BrowserView: NSView {
         placeholder.isHidden = true
         placeholder.translatesAutoresizingMaskIntoConstraints = false
 
+        buildRecovery()
+
         addSubview(header)
         addSubview(divider)
         addSubview(scrollView)
@@ -320,8 +350,226 @@ final class BrowserView: NSView {
         ])
     }
 
-    private func configureTable() {
-        tableView.headerView = nil
+    // MARK: - 失效恢复
+
+    private func buildRecovery() {
+        recoveryTitle.font = .systemFont(ofSize: 14, weight: .semibold)
+        recoveryTitle.alignment = .center
+        recoveryTitle.maximumNumberOfLines = 2
+
+        recoveryBody.font = .systemFont(ofSize: 12)
+        recoveryBody.textColor = .secondaryLabelColor
+        recoveryBody.alignment = .center
+        recoveryBody.maximumNumberOfLines = 4
+
+        let retry = NSButton(title: "重试", target: self, action: #selector(retryTapped))
+        retry.bezelStyle = .rounded
+
+        let reselect = NSButton(
+            title: "重新选择…",
+            target: self,
+            action: #selector(reselectTapped)
+        )
+        reselect.bezelStyle = .rounded
+
+        let remove = NSButton(title: "移除入口", target: self, action: #selector(removeTapped))
+        remove.bezelStyle = .rounded
+
+        let buttons = NSStackView(views: [retry, reselect, remove])
+        buttons.orientation = .horizontal
+        buttons.spacing = 8
+
+        recoveryStack.orientation = .vertical
+        recoveryStack.alignment = .centerX
+        recoveryStack.spacing = 10
+        recoveryStack.translatesAutoresizingMaskIntoConstraints = false
+        [recoveryTitle, recoveryBody, buttons].forEach { recoveryStack.addArrangedSubview($0) }
+        recoveryStack.isHidden = true
+
+        addSubview(recoveryStack)
+        NSLayoutConstraint.activate([
+            recoveryStack.centerXAnchor.constraint(equalTo: centerXAnchor),
+            recoveryStack.centerYAnchor.constraint(equalTo: centerYAnchor),
+            recoveryStack.leadingAnchor.constraint(
+                greaterThanOrEqualTo: leadingAnchor,
+                constant: 24
+            ),
+            recoveryStack.trailingAnchor.constraint(
+                lessThanOrEqualTo: trailingAnchor,
+                constant: -24
+            ),
+            recoveryBody.widthAnchor.constraint(lessThanOrEqualToConstant: 420)
+        ])
+    }
+
+    private func presentRecovery(title: String, message: String, suggestion: String) {
+        recoveryTitle.stringValue = title
+        recoveryBody.stringValue = "\(message)\n\(suggestion)"
+        recoveryStack.isHidden = false
+        placeholder.isHidden = true
+    }
+
+    private func hideRecovery() {
+        recoveryStack.isHidden = true
+    }
+
+    @objc private func retryTapped() {
+        library.reload()
+        guard let folder = currentFolderSnapshot() else { return }
+        show(folder: folder)
+    }
+
+    @objc private func reselectTapped() {
+        guard let folder = currentFolderSnapshot() else { return }
+
+        let panel = NSOpenPanel()
+        panel.canChooseDirectories = true
+        panel.canChooseFiles = false
+        panel.allowsMultipleSelection = false
+        panel.prompt = "选择"
+        panel.message = "选择这个入口今后指向的文件夹"
+
+        onModalStateChange?(true)
+        NSApp.activate()
+
+        panel.begin { [weak self] response in
+            guard let self else { return }
+            self.onModalStateChange?(false)
+            guard response == .OK, let url = panel.url else { return }
+
+            do {
+                try self.library.replaceFolder(id: folder.id, with: url)
+            } catch {
+                self.presentRecovery(
+                    title: "无法使用这个文件夹",
+                    message: error.localizedDescription,
+                    suggestion: "请选择一个可访问的文件夹。"
+                )
+                return
+            }
+
+            self.onFolderListChanged?()
+            if let updated = self.library.folders.first(where: { $0.id == folder.id }) {
+                self.show(folder: updated)
+            }
+        }
+    }
+
+    @objc private func removeTapped() {
+        guard let folder = currentFolderSnapshot() else { return }
+        library.removeFolder(id: folder.id)
+        onFolderListChanged?()
+    }
+
+    // MARK: - 目录变化
+
+    private func startWatching(_ url: URL) {
+        stopWatching()
+
+        let descriptor = open(url.path, O_EVTONLY)
+        guard descriptor >= 0 else { return }
+
+        let source = DispatchSource.makeFileSystemObjectSource(
+            fileDescriptor: descriptor,
+            eventMask: [.write, .rename, .delete, .extend, .attrib],
+            queue: .main
+        )
+        source.setEventHandler { [weak self] in
+            self?.scheduleDirectoryReload()
+        }
+        source.setCancelHandler {
+            close(descriptor)
+        }
+        source.resume()
+        directorySource = source
+    }
+
+    private func stopWatching() {
+        directorySource?.cancel()
+        directorySource = nil
+    }
+
+    private func scheduleDirectoryReload() {
+        reloadWorkItem?.cancel()
+
+        let work = DispatchWorkItem { [weak self] in
+            guard let self, !self.isShowingSearchResults else { return }
+            if let folder = self.currentFolderSnapshot() {
+                self.show(folder: folder)
+            }
+        }
+
+        reloadWorkItem = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: work)
+    }
+
+    // MARK: - 云端文件
+
+    private func prepareForUse(_ urls: [URL], action: @escaping () -> Void) {
+        let pending = urls.filter(CloudFiles.needsDownload)
+
+        guard !pending.isEmpty else {
+            action()
+            return
+        }
+
+        for url in pending {
+            try? FileManager.default.startDownloadingUbiquitousItem(at: url)
+        }
+
+        pendingCloudAction = action
+        noticeLabel.stringValue = "正在从 iCloud 下载…"
+        noticeLabel.isHidden = false
+        startCloudPolling(urls: pending)
+    }
+
+    private func startCloudPolling(urls: [URL]) {
+        cloudPollTimer?.invalidate()
+        cloudPendingURLs = urls
+
+        let timer = Timer(
+            timeInterval: 0.5,
+            target: self,
+            selector: #selector(checkCloudProgress),
+            userInfo: nil,
+            repeats: true
+        )
+        RunLoop.main.add(timer, forMode: .common)
+        cloudPollTimer = timer
+    }
+
+    @objc private func checkCloudProgress() {
+        if let failed = cloudPendingURLs.first(where: CloudFiles.hasDownloadError) {
+            finishCloudWait(
+                success: false,
+                message: "无法从 iCloud 下载「\(failed.lastPathComponent)」"
+            )
+            return
+        }
+
+        if cloudPendingURLs.allSatisfy({ !CloudFiles.needsDownload($0) }) {
+            finishCloudWait(success: true, message: nil)
+        }
+    }
+
+    private func finishCloudWait(success: Bool, message: String?) {
+        cloudPollTimer?.invalidate()
+        cloudPollTimer = nil
+        cloudPendingURLs = []
+
+        let action = pendingCloudAction
+        pendingCloudAction = nil
+
+        if success {
+            noticeLabel.isHidden = true
+            action?()
+        } else {
+            noticeLabel.stringValue = message ?? "无法从 iCloud 获取文件"
+            noticeLabel.isHidden = false
+        }
+    }
+
+    private func configureTable() {        tableView.headerView = nil
         tableView.style = .fullWidth
         tableView.rowHeight = Metrics.rowHeight
         tableView.selectionHighlightStyle = .regular
@@ -368,11 +616,18 @@ final class BrowserView: NSView {
                 sortRule: rule,
                 showHiddenFiles: showsHiddenFiles
             )
+            hideRecovery()
             tableView.reloadData()
             placeholder.stringValue = "这个文件夹是空的"
             placeholder.isHidden = !entries.isEmpty
         } catch {
-            presentMessage("无法读取内容：\(error.localizedDescription)")
+            entries = []
+            tableView.reloadData()
+            presentRecovery(
+                title: "无法读取内容",
+                message: error.localizedDescription,
+                suggestion: "点「重试」再试一次，或重新选择文件夹。"
+            )
         }
 
         if !entries.isEmpty {
@@ -457,7 +712,10 @@ final class BrowserView: NSView {
     private func performOpen(_ entry: DirectoryEntry) {
         if entry.isBrowsable {
             enter(entry)
-        } else {
+            return
+        }
+
+        prepareForUse([entry.url]) {
             NSWorkspace.shared.open(entry.url)
         }
     }
@@ -501,13 +759,17 @@ final class BrowserView: NSView {
 
     private func previewSelection() {
         let urls = selectedURLs()
-        guard !urls.isEmpty, let panel = QLPreviewPanel.shared() else { return }
+        guard !urls.isEmpty else { return }
 
-        previewURLs = urls
-        previewKeyBox?.isPreviewVisible = true
-        NSApp.activate()
-        panel.reloadData()
-        panel.makeKeyAndOrderFront(nil)
+        prepareForUse(urls) { [weak self] in
+            guard let self, let panel = QLPreviewPanel.shared() else { return }
+
+            self.previewURLs = urls
+            self.previewKeyBox?.isPreviewVisible = true
+            NSApp.activate()
+            panel.reloadData()
+            panel.makeKeyAndOrderFront(nil)
+        }
     }
 
     /// 关闭预览并恢复抽屉的键盘焦点。
@@ -737,6 +999,7 @@ extension BrowserView: NSTableViewDataSource, NSTableViewDelegate {
     }
 
     private func symbolName(for entry: DirectoryEntry) -> String {
+        if entry.isCloudOnly { return "icloud" }
         if entry.isSymbolicLink { return "link" }
         if entry.isBrowsable { return "folder" }
         if entry.isPackage { return "shippingbox" }

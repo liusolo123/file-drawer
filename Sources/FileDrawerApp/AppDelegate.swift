@@ -40,6 +40,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             self.settings.panelSize = PanelSize(size)
             self.scheduleSave()
         }
+        panel.onShow = { [weak rootView] in
+            rootView?.refresh()
+        }
         panel.focusSearchHandler = { [weak rootView] in
             rootView?.focusSearchField()
         }

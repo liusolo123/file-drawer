@@ -94,6 +94,8 @@ public struct LocalFolderAccess: FolderAccess {
             .isDirectoryKey,
             .isPackageKey,
             .isSymbolicLinkKey,
+            .isUbiquitousItemKey,
+            .ubiquitousItemDownloadingStatusKey,
             .contentModificationDateKey
         ]
 
@@ -119,6 +121,8 @@ public struct LocalFolderAccess: FolderAccess {
                 isDirectory: values.isDirectory ?? false,
                 isPackage: values.isPackage ?? false,
                 isSymbolicLink: values.isSymbolicLink ?? false,
+                isCloudOnly: (values.isUbiquitousItem ?? false)
+                    && values.ubiquitousItemDownloadingStatus != .current,
                 modifiedAt: values.contentModificationDate
             )
         }

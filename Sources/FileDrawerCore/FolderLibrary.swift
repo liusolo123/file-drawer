@@ -82,6 +82,29 @@ public final class FolderLibrary {
         onChange?()
     }
 
+    /// 让一个入口改指向新的文件夹：保留 id、顺序与排序规则，重置浏览位置。
+    public func replaceFolder(id: UUID, with url: URL) throws {
+        guard let index = folders.firstIndex(where: { $0.id == id }) else {
+            return
+        }
+
+        var isDirectory: ObjCBool = false
+        guard FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory),
+              isDirectory.boolValue else {
+            throw FolderLibraryError.notADirectory
+        }
+
+        let standardized = url.standardizedFileURL
+        let bookmark = try access.makeBookmark(for: standardized)
+
+        folders[index].bookmark = bookmark
+        folders[index].displayName = access.displayName(for: standardized)
+        folders[index].status = access.status(of: standardized)
+        folders[index].browsingPath = []
+        resolvedURLs[id] = standardized
+        onChange?()
+    }
+
     /// `destination` 是移动完成后的最终下标。
     public func moveFolder(from source: Int, to destination: Int) {
         guard folders.indices.contains(source),

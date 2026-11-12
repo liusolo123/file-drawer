@@ -7,7 +7,7 @@ public enum FolderStatus: String, Codable, Sendable {
     case permissionDenied
     case volumeUnavailable
 
-    /// 面向用户的原因说明。完整的三段式错误呈现留到失效处理那张票。
+    /// 面向用户的原因说明。
     public var localizedDescription: String {
         switch self {
         case .available:
@@ -18,6 +18,20 @@ public enum FolderStatus: String, Codable, Sendable {
             return "没有访问该文件夹的权限"
         case .volumeUnavailable:
             return "所在磁盘或卷未连接"
+        }
+    }
+
+    /// 用户接下来可以做什么。
+    public var recoverySuggestion: String {
+        switch self {
+        case .available:
+            return ""
+        case .missing:
+            return "重新选择这个入口指向的文件夹，或移除入口。"
+        case .permissionDenied:
+            return "在系统设置中恢复访问权限后点「重试」，或重新选择文件夹。"
+        case .volumeUnavailable:
+            return "重新连接磁盘后点「重试」，或移除入口。"
         }
     }
 }

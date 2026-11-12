@@ -31,6 +31,9 @@ final class PanelController: NSObject, NSWindowDelegate {
     /// 用户调整尺寸后回调，用于持久化「期望尺寸」。
     var onSizeChange: ((CGSize) -> Void)?
 
+    /// 面板显示后回调，用于强制刷新当前目录。
+    var onShow: (() -> Void)?
+
     /// 打开系统模态界面（如添加文件夹面板）时暂停「失焦即收起」。
     private(set) var suppressesAutoHide = false
 
@@ -131,6 +134,8 @@ final class PanelController: NSObject, NSWindowDelegate {
         } else {
             panel.orderFrontRegardless()
         }
+
+        onShow?()
     }
 
     private func targetScreen() -> NSScreen? {

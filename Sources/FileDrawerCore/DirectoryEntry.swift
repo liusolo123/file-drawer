@@ -7,6 +7,8 @@ public struct DirectoryEntry: Equatable, Identifiable, Sendable {
     public let isDirectory: Bool
     public let isPackage: Bool
     public let isSymbolicLink: Bool
+    /// 位于 iCloud，但内容尚未下载到本地。
+    public let isCloudOnly: Bool
     public let modifiedAt: Date?
 
     public var id: String { url.path }
@@ -22,6 +24,7 @@ public struct DirectoryEntry: Equatable, Identifiable, Sendable {
         isDirectory: Bool,
         isPackage: Bool,
         isSymbolicLink: Bool = false,
+        isCloudOnly: Bool = false,
         modifiedAt: Date?
     ) {
         self.url = url
@@ -29,6 +32,7 @@ public struct DirectoryEntry: Equatable, Identifiable, Sendable {
         self.isDirectory = isDirectory
         self.isPackage = isPackage
         self.isSymbolicLink = isSymbolicLink
+        self.isCloudOnly = isCloudOnly
         self.modifiedAt = modifiedAt
     }
 }
