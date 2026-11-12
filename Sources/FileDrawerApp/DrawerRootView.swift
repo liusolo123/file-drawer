@@ -31,6 +31,9 @@ final class DrawerRootView: NSView {
         browser.onFolderListChanged = { [weak self] in
             self?.refresh()
         }
+        browser.onFolderStatusesChanged = { [weak self] in
+            self?.sidebar.reload()
+        }
 
         refresh()
     }

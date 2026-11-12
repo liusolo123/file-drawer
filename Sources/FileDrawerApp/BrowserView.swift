@@ -70,6 +70,9 @@ final class BrowserView: NSView {
     /// 入口被移除或改指向后，通知外层刷新侧栏。
     var onFolderListChanged: (() -> Void)?
 
+    /// 入口状态变化（如权限丢失）后，通知外层只刷新侧栏。
+    var onFolderStatusesChanged: (() -> Void)?
+
     init(library: FolderLibrary) {
         self.library = library
         super.init(frame: .zero)
@@ -404,14 +407,24 @@ final class BrowserView: NSView {
     }
 
     private func presentRecovery(title: String, message: String, suggestion: String) {
+        entries = []
+        tableView.reloadData()
+
+        scrollView.isHidden = true
+        placeholder.isHidden = true
+        searchField.isEnabled = false
+        sortButton.isEnabled = false
+
         recoveryTitle.stringValue = title
         recoveryBody.stringValue = "\(message)\n\(suggestion)"
         recoveryStack.isHidden = false
-        placeholder.isHidden = true
     }
 
     private func hideRecovery() {
         recoveryStack.isHidden = true
+        scrollView.isHidden = false
+        searchField.isEnabled = true
+        sortButton.isEnabled = true
     }
 
     @objc private func retryTapped() {
@@ -624,23 +637,28 @@ final class BrowserView: NSView {
         } catch {
             entries = []
             tableView.reloadData()
-            presentRecovery(
-                title: "无法读取内容",
-                message: error.localizedDescription,
-                suggestion: "点「重试」再试一次，或重新选择文件夹。"
-            )
+
+            // 读取失败时重新判定入口状态，直接给出准确原因。
+            library.reload()
+            if let updated = currentFolderSnapshot(), updated.status != .available {
+                presentRecovery(
+                    title: "无法访问「\(updated.displayName)」",
+                    message: updated.status.localizedDescription,
+                    suggestion: updated.status.recoverySuggestion
+                )
+            } else {
+                presentRecovery(
+                    title: "无法读取内容",
+                    message: error.localizedDescription,
+                    suggestion: "点「重试」再试一次，或重新选择文件夹。"
+                )
+            }
+            onFolderStatusesChanged?()
         }
 
         if !entries.isEmpty {
             tableView.selectRowIndexes(IndexSet(integer: 0), byExtendingSelection: false)
         }
-    }
-
-    private func presentMessage(_ message: String) {
-        entries = []
-        tableView.reloadData()
-        placeholder.stringValue = message
-        placeholder.isHidden = false
     }
 
     private func currentFolderSnapshot() -> CommonFolder? {
