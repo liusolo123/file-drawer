@@ -1,7 +1,6 @@
 import Testing
 import Foundation
 @testable import FileDrawerCore
-
 @Suite("右键菜单可用性")
 struct ContextMenuPolicyTests {
     private func entry(
@@ -54,5 +53,38 @@ struct ContextMenuPolicyTests {
 
         #expect(ContextMenuPolicy.isEnabled(.preview, for: link))
         #expect(!link.isBrowsable)
+    }
+
+    @Test("多选时只保留可批量执行的动作")
+    func multiSelectionKeepsBatchActionsOnly() {
+        let files = [
+            entry(name: "a.txt", isDirectory: false),
+            entry(name: "b.txt", isDirectory: false)
+        ]
+
+        #expect(!ContextMenuPolicy.isEnabled(.open, for: files))
+        #expect(!ContextMenuPolicy.isEnabled(.preview, for: files))
+        #expect(ContextMenuPolicy.isEnabled(.revealInFinder, for: files))
+        #expect(ContextMenuPolicy.isEnabled(.copyToClipboard, for: files))
+        #expect(!ContextMenuPolicy.isEnabled(.copyPath, for: files))
+    }
+
+    @Test("空选择时所有动作不可用")
+    func emptySelectionDisablesEveryAction() {
+        for action in ContextMenuAction.allCases {
+            #expect(!ContextMenuPolicy.isEnabled(action, for: [DirectoryEntry]()))
+        }
+    }
+
+    @Test("右键已选行保留多选，右键未选行只选该行")
+    func contextClickPreservesOrReplacesSelection() {
+        #expect(
+            SelectionPolicy.rowsAfterContextClick(row: 1, currentSelection: [0, 1, 2])
+                == [0, 1, 2]
+        )
+        #expect(
+            SelectionPolicy.rowsAfterContextClick(row: 3, currentSelection: [0, 1, 2])
+                == [3]
+        )
     }
 }

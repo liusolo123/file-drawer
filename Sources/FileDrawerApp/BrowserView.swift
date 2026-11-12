@@ -325,7 +325,7 @@ final class BrowserView: NSView {
         tableView.style = .fullWidth
         tableView.rowHeight = Metrics.rowHeight
         tableView.selectionHighlightStyle = .regular
-        tableView.allowsMultipleSelection = false
+        tableView.allowsMultipleSelection = true
         tableView.backgroundColor = .clear
         tableView.dataSource = self
         tableView.delegate = self
@@ -333,9 +333,12 @@ final class BrowserView: NSView {
         tableView.doubleAction = #selector(openSelection)
         tableView.columnAutoresizingStyle = .lastColumnOnlyAutoresizingStyle
         tableView.onSpace = { [weak self] in self?.togglePreview() }
+        tableView.onCopy = { [weak self] in self?.menuCopy() }
         tableView.contextMenuProvider = { [weak self] row in
             self?.makeContextMenu(for: row)
         }
+        tableView.setDraggingSourceOperationMask(.copy, forLocal: false)
+        tableView.setDraggingSourceOperationMask(.copy, forLocal: true)
 
         // 单列承载「图标 + 名称 + 修改时间」，避免多列固定宽度在窄面板里被裁切。
         let entryColumn = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("entry"))
@@ -573,7 +576,9 @@ final class BrowserView: NSView {
 
     private func makeContextMenu(for row: Int) -> NSMenu? {
         guard entries.indices.contains(row) else { return nil }
-        let entry = entries[row]
+
+        let selection = selectedEntries()
+        guard !selection.isEmpty else { return nil }
 
         let menu = NSMenu()
         menu.autoenablesItems = false
@@ -590,7 +595,7 @@ final class BrowserView: NSView {
         for (action, title, selector) in items {
             let item = NSMenuItem(title: title, action: selector, keyEquivalent: "")
             item.target = self
-            item.isEnabled = ContextMenuPolicy.isEnabled(action, for: entry)
+            item.isEnabled = ContextMenuPolicy.isEnabled(action, for: selection)
             menu.addItem(item)
         }
 
@@ -659,12 +664,47 @@ extension BrowserView: NSTableViewDataSource, NSTableViewDelegate {
         entries.count
     }
 
+    // MARK: - 拖出
+
+    func tableView(
+        _ tableView: NSTableView,
+        pasteboardWriterForRow row: Int
+    ) -> NSPasteboardWriting? {
+        guard entries.indices.contains(row) else { return nil }
+        return entries[row].url as NSURL
+    }
+
+    func tableView(
+        _ tableView: NSTableView,
+        draggingSession session: NSDraggingSession,
+        sourceOperationMaskFor context: NSDraggingContext
+    ) -> NSDragOperation {
+        .copy
+    }
+
+    func tableView(
+        _ tableView: NSTableView,
+        draggingSession session: NSDraggingSession,
+        willBeginAt screenPoint: NSPoint,
+        forRowIndexes rowIndexes: IndexSet
+    ) {
+        onInteractionChange?(true)
+    }
+
+    func tableView(
+        _ tableView: NSTableView,
+        draggingSession session: NSDraggingSession,
+        endedAt screenPoint: NSPoint,
+        operation: NSDragOperation
+    ) {
+        onInteractionChange?(false)
+    }
+
     func tableView(
         _ tableView: NSTableView,
         viewFor tableColumn: NSTableColumn?,
         row: Int
-    ) -> NSView? {
-        guard entries.indices.contains(row) else { return nil }
+    ) -> NSView? {        guard entries.indices.contains(row) else { return nil }
         let entry = entries[row]
 
         let cell = tableView.makeView(withIdentifier: Self.entryCellIdentifier, owner: self)

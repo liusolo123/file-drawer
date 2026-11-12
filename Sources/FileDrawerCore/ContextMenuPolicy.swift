@@ -9,19 +9,42 @@ public enum ContextMenuAction: String, CaseIterable, Sendable {
     case copyPath
 }
 
-/// 决定每个菜单项对给定项目是否可用。
+/// 决定每个菜单项对当前选择是否可用。
 public enum ContextMenuPolicy {
-    /// 普通文件夹用「打开」进入，不支持 Quick Look 预览；
-    /// 文件、包目录与符号链接可以预览。
+    /// 多选时只保留可批量执行的动作：
+    /// 打开与预览需要单个项目，复制路径也只对单个项目有意义。
+    public static func isEnabled(
+        _ action: ContextMenuAction,
+        for entries: [DirectoryEntry]
+    ) -> Bool {
+        switch action {
+        case .open:
+            return entries.count == 1
+        case .preview:
+            return entries.count == 1 && !entries[0].isBrowsable
+        case .revealInFinder, .copyToClipboard:
+            return !entries.isEmpty
+        case .copyPath:
+            return entries.count == 1
+        }
+    }
+
     public static func isEnabled(
         _ action: ContextMenuAction,
         for entry: DirectoryEntry
     ) -> Bool {
-        switch action {
-        case .preview:
-            return !entry.isBrowsable
-        case .open, .revealInFinder, .copyToClipboard, .copyPath:
-            return true
-        }
+        isEnabled(action, for: [entry])
+    }
+}
+
+/// 选择相关的纯规则，便于测试。
+public enum SelectionPolicy {
+    /// 右键点击某行后应保留的选择：
+    /// 点在已选中的行上时保留当前多选，否则只选中该行。
+    public static func rowsAfterContextClick(
+        row: Int,
+        currentSelection: Set<Int>
+    ) -> Set<Int> {
+        currentSelection.contains(row) ? currentSelection : [row]
     }
 }
