@@ -1,0 +1,11 @@
+{
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerApp/AppDelegate.swift" : {
+    "abi-baseline-json" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/FileDrawerApp.abi.json",
+    "const-values" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/FileDrawerApp-primary.swiftconstvalues",
+    "dependencies" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/FileDrawerApp-primary.d",
+    "diagnostics" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/FileDrawerApp-primary.dia",
+    "swiftdoc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/FileDrawerApp.swiftdoc",
+    "swiftmodule" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/FileDrawerApp.swiftmodule",
+    "swiftsourceinfo" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/FileDrawerApp.swiftsourceinfo"
+  }
+}

@@ -1,0 +1,4 @@
+Target dependency graph (2 targets)
+Target 'FileDrawerApp-product' in project 'FileDrawer'
+➜ Explicit dependency on target 'FileDrawerCore' in project 'FileDrawer'
+Target 'FileDrawerCore' in project 'FileDrawer' (no dependencies)

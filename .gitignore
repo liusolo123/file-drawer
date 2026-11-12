@@ -21,3 +21,4 @@ DerivedData/
 # 构建产物
 dist/
 *.app/
+App/AppIcon.iconset/

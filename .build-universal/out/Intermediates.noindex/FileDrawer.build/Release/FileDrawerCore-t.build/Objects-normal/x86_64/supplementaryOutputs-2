@@ -1,0 +1,12 @@
+{
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerCore/AppMetadata.swift" : {
+    "abi-baseline-json" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/FileDrawerCore.abi.json",
+    "const-values" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/FileDrawerCore-primary.swiftconstvalues",
+    "dependencies" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/FileDrawerCore-primary.d",
+    "diagnostics" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/FileDrawerCore-primary.dia",
+    "objc-header" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/FileDrawerCore-Swift.h",
+    "swiftdoc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/FileDrawerCore.swiftdoc",
+    "swiftmodule" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/FileDrawerCore.swiftmodule",
+    "swiftsourceinfo" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/FileDrawerCore.swiftsourceinfo"
+  }
+}

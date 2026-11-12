@@ -1,0 +1,86 @@
+{
+  "" : {
+    "const-values" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/FileDrawerCore-primary.swiftconstvalues",
+    "dependencies" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/FileDrawerCore-primary.d",
+    "diagnostics" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/FileDrawerCore-primary.dia",
+    "emit-module-dependencies" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/FileDrawerCore-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/FileDrawerCore-primary-emit-module.dia",
+    "pch" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/FileDrawerCore-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/FileDrawerCore-primary.swiftdeps"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerCore/AppMetadata.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/AppMetadata.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/AppMetadata.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/AppMetadata.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerCore/CommonFolder.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/CommonFolder.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/CommonFolder.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/CommonFolder.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerCore/ContextMenuPolicy.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/ContextMenuPolicy.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/ContextMenuPolicy.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/ContextMenuPolicy.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerCore/DirectoryEntry.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/DirectoryEntry.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/DirectoryEntry.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/DirectoryEntry.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerCore/DrawerState.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/DrawerState.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/DrawerState.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/DrawerState.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerCore/FolderAccess.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/FolderAccess.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/FolderAccess.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/FolderAccess.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerCore/FolderLibrary.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/FolderLibrary.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/FolderLibrary.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/FolderLibrary.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerCore/HotkeySpec.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/HotkeySpec.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/HotkeySpec.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/HotkeySpec.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerCore/HoverGeometry.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/HoverGeometry.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/HoverGeometry.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/HoverGeometry.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerCore/PanelPlacement.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/PanelPlacement.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/PanelPlacement.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/PanelPlacement.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerCore/PanelSize.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/PanelSize.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/PanelSize.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/PanelSize.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerCore/PanelStateMachine.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/PanelStateMachine.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/PanelStateMachine.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/PanelStateMachine.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerCore/SearchEngine.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/SearchEngine.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/SearchEngine.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/SearchEngine.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerCore/SortRule.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/SortRule.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/SortRule.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/SortRule.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerCore/StateStore.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/StateStore.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/StateStore.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerCore-t.build/Objects-normal/x86_64/StateStore.o"
+  }
+}

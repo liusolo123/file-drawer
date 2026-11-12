@@ -1,0 +1,683 @@
+[
+  {
+    "isFramework" : true,
+    "moduleName" : "Accessibility",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/Accessibility-3A45VDUCZGX0A.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "AppKit",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/AppKit-12VW3N5PIU7JZ.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "ColorSync",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/ColorSync-1LA4X3ZCG5IXC.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "Combine",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/Combine-3LGK87NFK8YIA.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "CoreData",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/CoreData-2SBXJYB36E6RE.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "CoreFoundation",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/CoreFoundation-NESESP7W5DUM.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "CoreGraphics",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/CoreGraphics-1LD5S0HLU9N66.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "CoreImage",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/CoreImage-C5MFDVID9NSD.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "CoreText",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/CoreText-1FZPTLBMKVWCB.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "CoreTransferable",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/CoreTransferable-27M8WH53YER0O.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "CoreVideo",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/CoreVideo-VS2N927MEXFR.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "Darwin",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/Darwin-1Q0295N87FWKJ.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "DataDetection",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/DataDetection-2EC2QAKPI5F1W.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "DeveloperToolsSupport",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/DeveloperToolsSupport-XMG0VNK0T283.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "Dispatch",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/Dispatch-2JEEMOY68D4ML.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "FileDrawerCore",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/Products\/Release\/FileDrawerCore.swiftmodule\/x86_64-apple-macos.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "Foundation",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/Foundation-375TY025VTQ6W.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "IOKit",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/IOKit-6RAMS0785Q7J.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "ImageIO",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/ImageIO-1615TOLMB1O96.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "Metal",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/Metal-3C96X69E6SCUF.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "OSLog",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/OSLog-1RI0B9XX693D2.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "ObjectiveC",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/ObjectiveC-3391AAQHG3VV9.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "Observation",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/Observation-R6PGTYLYRIU0.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "PDFKit",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/PDFKit-1QIYIV1BX9LH3.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "QuartzCore",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/QuartzCore-3HYFTI0XK5WEQ.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "QuickLookUI",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/QuickLookUI-197DSL170LFB8.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "Spatial",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/Spatial-1J8UJNG3C77DN.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "Swift",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/Swift-3MIVMGPMCFGHD.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "SwiftUICore",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/SwiftUICore-2EGNPJYJ97D3X.swiftmodule"
+  },
+  {
+    "isFramework" : true,
+    "moduleName" : "Symbols",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/Symbols-158NBVEHYFW49.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "System",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/System-1AVG34E1S6ZQK.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "UniformTypeIdentifiers",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/UniformTypeIdentifiers-WR89AWSRRLEW.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "XPC",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/XPC-1X5390HJBM89S.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "_Builtin_float",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/_Builtin_float-T1F7BS2O6TK5.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "_Concurrency",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/_Concurrency-1SR34FKVRVOZ7.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "_DarwinFoundation1",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/_DarwinFoundation1-5PJRAOBUWOO9.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "_DarwinFoundation2",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/_DarwinFoundation2-38ICL1KC8SKCD.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "_DarwinFoundation3",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/_DarwinFoundation3-DGV6Q2W4QFKV.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "_StringProcessing",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/_StringProcessing-26EY9RQLA8UNP.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "os",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/os-27M631WOMPTN6.swiftmodule"
+  },
+  {
+    "isFramework" : false,
+    "moduleName" : "simd",
+    "modulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/simd-2308M4PU48NRZ.swiftmodule"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/Accessibility.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/Accessibility-2GS4YIYVJ9KGB9UQA4T83TFE3.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "Accessibility"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/AppKit.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/AppKit-C1FHQBOKGGURIQUZ07PYECJL9.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "AppKit"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/ApplicationServices.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/ApplicationServices-5KX5MKD1VKGX52R692HI1S4Y3.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "ApplicationServices"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CFNetwork.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/CFNetwork-DNAPV4PDJ5MWZXK8SRX6OM4S4.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CFNetwork"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/cups.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/CUPS-A9XWCW6D1CL9XQN62C6IHG5L9.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CUPS"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/Carbon.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/Carbon-MMR66K13IRP0VTYAU6FMBFVJ.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "Carbon"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/Cocoa.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/Cocoa-96KTP2WOXV3K4MV0EZVM17HID.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "Cocoa"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/ColorSync.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/ColorSync-1BY0FLZJMEU1P6ZH6UZ0E8AAY.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "ColorSync"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CoreData.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/CoreData-4XTLYJM8F0MNFFASOJRG51EJ7.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CoreData"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CoreFoundation.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/CoreFoundation-8XSKA1W0OFCXQ9ZOI388ABKCB.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CoreFoundation"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CoreGraphics.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/CoreGraphics-DJE3FV550J7QTYFBN5M5YONMA.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CoreGraphics"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CoreImage.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/CoreImage-2QUM9KI45A8164EVREOQTPPP4.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CoreImage"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CoreServices.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/CoreServices-4A2XX9GCJ7E3K6DPEXAM5A7PG.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CoreServices"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CoreText.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/CoreText-3T56WPF4BK2ED5R10VZ8ZINEA.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CoreText"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CoreTransferable.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/CoreTransferable-2MS1RGJ03X86HXT9229FSP8PE.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CoreTransferable"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/CoreVideo.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/CoreVideo-1ZN5SKGY8JDARZM5H91I1DTCR.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "CoreVideo"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/Darwin.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/Darwin-E9GTQ4Z1TKR6MQYQ71FG3RKFP.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "Darwin"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/DataDetection.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/DataDetection-EO0KERROULESSBVMFHRN3REDG.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "DataDetection"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/DeveloperToolsSupport.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/DeveloperToolsSupport-DIF6QYTYQVNAICT5OO2VF8IWZ.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "DeveloperToolsSupport"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/DiskArbitration.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/DiskArbitration-13C5JC84YCNP2LTMVQMZ5JCXZ.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "DiskArbitration"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/dispatch.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/Dispatch-96Z6GM88W5QH580BG4C44LXJI.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "Dispatch"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/Foundation.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/Foundation-AK568VM0A4D0827O9DMUY22J8.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "Foundation"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/IOKit.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/IOKit-58EV3FV4BFI0MVENPV9Z9YQSU.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "IOKit"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/IOSurface.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/IOSurface-C9MIUE5LDO7I2KOQS1IJSZKZV.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "IOSurface"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/ImageIO.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/ImageIO-A2OG7986LDLK9HMZS6IMXOE1U.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "ImageIO"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/DarwinBasic.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/MachO-3TEABSIUHCRZV4B95SRNT2H0B.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "MachO"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/Metal.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/Metal-CNMYURUFDF85DQL1VTK71L6J3.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "Metal"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/OSLog.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/OSLog-76QX7R68SIC3TJOYILFCCXF3E.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "OSLog"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/ObjectiveC.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/ObjectiveC-5ZFHU058TED4K1B1NB3G9L7OT.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "ObjectiveC"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/OpenGL.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/OpenGL-6Q239DBM9ELQFMHFPTODG5Z3W.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "OpenGL"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/PDFKit.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/PDFKit-EDN1F0GDSDSM566BT52C8UX7W.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "PDFKit"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/QuartzCore.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/QuartzCore-B8I24D5Z3CPFNW28VYM1ASBBR.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "QuartzCore"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/QuickLook.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/QuickLook-WREXES209UMHNLSOJ1JKP4HA.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "QuickLook"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/QuickLookUI.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/QuickLookUI-AYXXG4LJRUK1JP3XPUT8A4YHD.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "QuickLookUI"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/Security.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/Security-DM4TTDT8DSKQTCPFFZPC6KACV.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "Security"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/ServiceManagement.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/ServiceManagement-C3N3YDKATODJS72IZT2I25FH8.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "ServiceManagement"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/Spatial\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/Spatial-A2KBYM3F3W31F3PSVF2G9MRL.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "Spatial"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/lib\/swift\/shims\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/SwiftShims-DURRG100JZMVDL44GUYDH73TX.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "SwiftShims"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/SwiftUICore.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/SwiftUICore-5M0XM0O077BAG1NF1BUIRSKHV.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "SwiftUICore"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/Symbols.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/Symbols-6M00WY7QTNALT9EVIQ0020AMN.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "Symbols"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/System\/Library\/Frameworks\/UniformTypeIdentifiers.framework\/Modules\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/UniformTypeIdentifiers-B1W5VXE9J8Y6RRZ1U33F0A7S3.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "UniformTypeIdentifiers"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/xpc.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/XPC-CRGFXKM22SI9D3X020LH0WTB0.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "XPC"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/DarwinFoundation1.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/_AvailabilityInternal-7GKQM6V5YZFZ2GNACHMAD9ZB4.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_AvailabilityInternal"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/_Builtin_float-H2Q59QV19GZHBBTPFHAG8MU1.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_Builtin_float"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/_Builtin_intrinsics-B9WFPWVVYRR3FJ7V9R8LNCB5I.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_Builtin_intrinsics"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/_Builtin_inttypes-BRB65KLGZPCCRC7UGH31FIC8Y.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_Builtin_inttypes"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/_Builtin_limits-LKF705L0NG2QSAW8XQ8JTSIF.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_Builtin_limits"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/_Builtin_stdarg-6AXAVT1Z078W0QN2IJRTRQEGI.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_Builtin_stdarg"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/_Builtin_stdatomic-1DLNM36AQQ0036D9D0SJX3YIR.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_Builtin_stdatomic"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/_Builtin_stdbool-9KK7F7WG919GWPUKZ38HB2TH.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_Builtin_stdbool"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/_Builtin_stddef-PNLTRBS2CQ9E2SKZQA25IVC5.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_Builtin_stddef"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/_Builtin_stdint-CLTN1M6BO1WS914WJWICZRUFN.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_Builtin_stdint"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/_Builtin_tgmath-DUC17FVVVOBU3AWMVQGORD5H0.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_Builtin_tgmath"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/DarwinFoundation1.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/_DarwinFoundation1-F4Q3KX1JH6OAARLC36ZAZB3QR.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_DarwinFoundation1"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/DarwinFoundation2.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/_DarwinFoundation2-9TAHUT4Q2GW9IIFMK0DAQUB8U.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_DarwinFoundation2"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/DarwinFoundation3.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/_DarwinFoundation3-566S9N7WF2JU2YH2KZMV33YAG.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_DarwinFoundation3"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/lib\/swift\/shims\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/_SwiftConcurrencyShims-66H96XXHYD5FJ7RM82T7H5CR9.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "_SwiftConcurrencyShims"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/launch.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/launch-2HO95NKQGHZ0M5QNO5QKS7PW0.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "launch"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/libDER\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/libDER-1N1DE2C8BPD636NVY2OW71ZZO.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "libDER"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/libkern.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/libkern-BVYFAG6S6SY44XV6BBZT9D8NY.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "libkern"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/os.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/os-2TOTPXTJRJUAEPT634CP8MNHA.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "os"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/os.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/os_object-5P6WRAU7LP6F7TB5YN8JHDF65.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "os_object"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/os.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/os_workgroup-8EXVR6E8ILHZP8EKK57BS1CWN.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "os_workgroup"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/ptrauth-6ZPTUPN1H288UXDU3SRWR64WW.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "ptrauth"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/usr\/lib\/clang\/21\/include\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/ptrcheck-EKPAUNL6WCZZ4TMV91UU2DFNJ.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "ptrcheck"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/simd\/module.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/simd-AO4U1MKHYD196ATK77WSJ92JW.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "simd"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/c_standard_library.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/string_h-C1MKH18PLZP3WFSEC7R9GIBXQ.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "string_h"
+  },
+  {
+    "clangModuleMapPath" : "\/Library\/Developer\/CommandLineTools\/SDKs\/MacOSX27.0.sdk\/usr\/include\/DarwinFoundation2.modulemap",
+    "clangModulePath" : "\/Users\/liusolo\/Documents\/项目\/文件抽屉\/.build-universal\/out\/SDKExplicitPrecompiledModules\/sys_types-BXEBODOKWOZWTO1K6B1J7NOT0.pcm",
+    "isBridgingHeaderDependency" : false,
+    "isFramework" : false,
+    "moduleName" : "sys_types"
+  }
+]

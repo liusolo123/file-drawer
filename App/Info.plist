@@ -8,6 +8,8 @@
     <string>文件抽屉</string>
     <key>CFBundleExecutable</key>
     <string>FileDrawer</string>
+    <key>CFBundleIconFile</key>
+    <string>AppIcon</string>
     <key>CFBundleIdentifier</key>
     <string>com.liusolo.filedrawer</string>
     <key>CFBundleInfoDictionaryVersion</key>
@@ -20,11 +22,15 @@
     <string>0.1.0</string>
     <key>CFBundleVersion</key>
     <string>1</string>
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.productivity</string>
     <key>LSMinimumSystemVersion</key>
     <string>14.0</string>
     <key>LSUIElement</key>
     <true/>
     <key>NSHighResolutionCapable</key>
     <true/>
+    <key>NSHumanReadableCopyright</key>
+    <string>© 2026 liusolo</string>
 </dict>
 </plist>

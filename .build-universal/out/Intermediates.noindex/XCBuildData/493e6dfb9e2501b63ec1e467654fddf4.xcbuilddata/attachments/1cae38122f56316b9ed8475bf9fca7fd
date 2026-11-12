@@ -1,0 +1,76 @@
+{
+  "" : {
+    "const-values" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/FileDrawerApp-primary.swiftconstvalues",
+    "dependencies" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/FileDrawerApp-primary.d",
+    "diagnostics" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/FileDrawerApp-primary.dia",
+    "emit-module-dependencies" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/FileDrawerApp-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/FileDrawerApp-primary-emit-module.dia",
+    "pch" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/FileDrawerApp-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/FileDrawerApp-primary.swiftdeps"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerApp/AppDelegate.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/AppDelegate.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/AppDelegate.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/AppDelegate.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerApp/AppPaths.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/AppPaths.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/AppPaths.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/AppPaths.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerApp/BrowserView.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/BrowserView.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/BrowserView.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/BrowserView.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerApp/CloudFiles.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/CloudFiles.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/CloudFiles.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/CloudFiles.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerApp/DrawerRootView.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/DrawerRootView.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/DrawerRootView.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/DrawerRootView.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerApp/DrawerTableView.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/DrawerTableView.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/DrawerTableView.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/DrawerTableView.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerApp/HotkeyCenter.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/HotkeyCenter.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/HotkeyCenter.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/HotkeyCenter.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerApp/HoverMonitor.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/HoverMonitor.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/HoverMonitor.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/HoverMonitor.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerApp/PanelController.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/PanelController.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/PanelController.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/PanelController.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerApp/ResizeGripView.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/ResizeGripView.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/ResizeGripView.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/ResizeGripView.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerApp/SettingsWindowController.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/SettingsWindowController.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/SettingsWindowController.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/SettingsWindowController.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerApp/SidebarView.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/SidebarView.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/SidebarView.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/SidebarView.o"
+  },
+  "/Users/liusolo/Documents/项目/文件抽屉/Sources/FileDrawerApp/main.swift" : {
+    "index-unit-output-path" : "/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/main.o",
+    "llvm-bc" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/main.bc",
+    "object" : "/Users/liusolo/Documents/项目/文件抽屉/.build-universal/out/Intermediates.noindex/FileDrawer.build/Release/FileDrawerApp-p.build/Objects-normal/x86_64/main.o"
+  }
+}

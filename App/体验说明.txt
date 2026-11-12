@@ -1,0 +1,48 @@
+文件抽屉 0.1.0（体验版）
+========================
+
+适合谁
+------
+macOS 14 及以上，Apple Silicon（M 系列）Mac。
+
+安装
+----
+把「文件抽屉.app」拖到 Applications 文件夹。
+
+首次打开
+--------
+如果提示“无法验证开发者”：
+  1. 在 Finder 里右键点击「文件抽屉.app」→「打开」；
+  2. 或打开 系统设置 → 隐私与安全性，点「仍要打开」。
+
+如果仍然被拦，可以在终端执行：
+  xattr -dr com.apple.quarantine /Applications/文件抽屉.app
+
+启动后
+------
+没有 Dock 图标。请看屏幕右上角菜单栏的托盘图标。
+
+默认快捷键：Control + Option + F
+可在托盘菜单「设置…」里修改或禁用。
+
+基本用法
+--------
+- 点托盘图标「打开抽屉」，或把鼠标移到屏幕顶部中央（刘海处）停留约 0.25 秒。
+- 点左下角「+」添加常用文件夹。
+- 单击选中，空格预览，双击打开。
+- 可 Command / Shift 多选，拖到聊天软件、浏览器上传区或 Finder。
+- 鼠标离开抽屉约 0.5 秒后会自动收起。
+- 右侧可以按名称或修改时间排序，也可以在常用文件夹内搜索。
+
+已知限制
+--------
+- 多屏行为尚未完整验证。
+- 登录启动需要把应用放在 Applications 下。
+- 没有自动更新。
+- 只有 Apple Silicon 版本。
+- 首次运行会创建 ~/Library/Application Support/com.liusolo.filedrawer 保存设置。
+
+卸载
+----
+退出应用，删除「文件抽屉.app」。
+如需清除设置，再删除 ~/Library/Application Support/com.liusolo.filedrawer。

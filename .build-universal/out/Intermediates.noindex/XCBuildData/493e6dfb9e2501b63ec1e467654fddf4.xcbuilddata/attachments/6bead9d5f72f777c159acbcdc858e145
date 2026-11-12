@@ -1,0 +1,4 @@
+module FileDrawerCore {
+header "FileDrawerCore-Swift.h"
+export *
+}
