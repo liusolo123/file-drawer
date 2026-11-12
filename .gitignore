@@ -22,3 +22,12 @@ DerivedData/
 dist/
 *.app/
 App/AppIcon.iconset/
+
+# 视频工程
+video/frames/
+video/out/
+video/node_modules/
+video/assets/audio/*.wav
+video/assets/audio/*.aiff
+video/assets/audio/auditions/
+video/assets/bgm/*.wav
