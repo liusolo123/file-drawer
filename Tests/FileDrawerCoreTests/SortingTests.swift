@@ -137,5 +137,19 @@ struct SortingTests {
 
         let state = try JSONDecoder().decode(DrawerState.self, from: Data(json.utf8))
         #expect(!state.settings.showsHiddenFiles)
+        #expect(state.settings.panelSize == .default)
+    }
+
+    @Test("面板尺寸随状态文件往返")
+    func panelSizeRoundTrip() throws {
+        let sandbox = try TempSandbox()
+        defer { sandbox.destroy() }
+
+        let store = StateStore(directory: sandbox.root)
+        var state = DrawerState()
+        state.settings.panelSize = PanelSize(width: 900, height: 520)
+        try store.save(state)
+
+        #expect(try store.load().settings.panelSize == PanelSize(width: 900, height: 520))
     }
 }

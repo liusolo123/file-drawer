@@ -29,4 +29,16 @@ public enum PanelPlacement {
             height: height.rounded()
         )
     }
+
+    /// 把期望尺寸夹取到「不小于最小尺寸、不大于屏幕可见区域」。
+    public static func clampedSize(
+        _ desired: CGSize,
+        in visibleFrame: CGRect,
+        minimum: CGSize = CGSize(width: 480, height: 320)
+    ) -> CGSize {
+        CGSize(
+            width: min(max(desired.width, minimum.width), visibleFrame.width),
+            height: min(max(desired.height, minimum.height), visibleFrame.height)
+        )
+    }
 }

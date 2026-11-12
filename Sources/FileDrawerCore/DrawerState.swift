@@ -4,12 +4,32 @@ import Foundation
 public struct DrawerSettings: Codable, Equatable, Sendable {
     /// 是否在列表与搜索中显示隐藏文件。默认关闭。
     public var showsHiddenFiles: Bool
+    /// 面板的期望尺寸。屏幕放不下时只在显示时夹取。
+    public var panelSize: PanelSize
 
-    public init(showsHiddenFiles: Bool = false) {
+    public init(
+        showsHiddenFiles: Bool = false,
+        panelSize: PanelSize = .default
+    ) {
         self.showsHiddenFiles = showsHiddenFiles
+        self.panelSize = panelSize
     }
 
     public static let `default` = DrawerSettings()
+
+    private enum CodingKeys: String, CodingKey {
+        case showsHiddenFiles
+        case panelSize
+    }
+
+    /// 早期状态文件缺少新字段时按默认值处理。
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        showsHiddenFiles = try container.decodeIfPresent(Bool.self, forKey: .showsHiddenFiles)
+            ?? false
+        panelSize = try container.decodeIfPresent(PanelSize.self, forKey: .panelSize)
+            ?? .default
+    }
 }
 
 /// 需要持久化的全部抽屉状态。

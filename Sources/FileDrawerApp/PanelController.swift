@@ -24,8 +24,12 @@ final class DrawerPanel: NSPanel {
 @MainActor
 final class PanelController: NSObject, NSWindowDelegate {
     private let panel: DrawerPanel
+    private var desiredSize: CGSize
     private var previousApplication: NSRunningApplication?
     private var hadFocus = false
+
+    /// 用户调整尺寸后回调，用于持久化「期望尺寸」。
+    var onSizeChange: ((CGSize) -> Void)?
 
     /// 打开系统模态界面（如添加文件夹面板）时暂停「失焦即收起」。
     private(set) var suppressesAutoHide = false
@@ -36,9 +40,10 @@ final class PanelController: NSObject, NSWindowDelegate {
     /// 由外层注入：把键盘焦点放进搜索框。
     var focusSearchHandler: (() -> Void)?
 
-    init(contentView: NSView) {
+    init(contentView: NSView, size: PanelSize = .default) {
+        desiredSize = size.cgSize
         panel = DrawerPanel(
-            contentRect: CGRect(x: 0, y: 0, width: 720, height: 440),
+            contentRect: CGRect(origin: .zero, size: size.cgSize),
             styleMask: [.borderless, .nonactivatingPanel],
             backing: .buffered,
             defer: false
@@ -114,8 +119,9 @@ final class PanelController: NSObject, NSWindowDelegate {
             previousApplication = NSWorkspace.shared.frontmostApplication
         }
 
+        let effective = PanelPlacement.clampedSize(desiredSize, in: screen.visibleFrame)
         panel.setFrame(
-            PanelPlacement.topCenter(panelSize: panel.frame.size, in: screen.visibleFrame),
+            PanelPlacement.topCenter(panelSize: effective, in: screen.visibleFrame),
             display: true
         )
 
@@ -184,7 +190,43 @@ final class PanelController: NSObject, NSWindowDelegate {
             contentView.bottomAnchor.constraint(equalTo: material.bottomAnchor)
         ])
 
+        let grip = ResizeGripView()
+        grip.translatesAutoresizingMaskIntoConstraints = false
+        grip.onDrag = { [weak self] deltaWidth, deltaHeight in
+            self?.resize(byWidth: deltaWidth, height: deltaHeight)
+        }
+        container.addSubview(grip)
+        NSLayoutConstraint.activate([
+            grip.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -4),
+            grip.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -4),
+            grip.widthAnchor.constraint(equalToConstant: 16),
+            grip.heightAnchor.constraint(equalToConstant: 16)
+        ])
+
         panel.contentView = container
+    }
+
+    private func resize(byWidth deltaWidth: CGFloat, height deltaHeight: CGFloat) {
+        guard let screen = targetScreen() else { return }
+
+        let minimum = CGSize(width: 480, height: 320)
+        let requested = CGSize(
+            width: min(max(panel.frame.width + deltaWidth, minimum.width), 4000),
+            height: min(max(panel.frame.height + deltaHeight, minimum.height), 4000)
+        )
+        desiredSize = requested
+
+        let effective = PanelPlacement.clampedSize(
+            requested,
+            in: screen.visibleFrame,
+            minimum: minimum
+        )
+        panel.setFrame(
+            PanelPlacement.topCenter(panelSize: effective, in: screen.visibleFrame),
+            display: true
+        )
+
+        onSizeChange?(requested)
     }
 
     func windowDidBecomeKey(_ notification: Notification) {

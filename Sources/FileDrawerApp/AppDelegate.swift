@@ -34,7 +34,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         self.library = library
         self.rootView = rootView
-        let panel = PanelController(contentView: rootView)
+        let panel = PanelController(contentView: rootView, size: settings.panelSize)
+        panel.onSizeChange = { [weak self] size in
+            guard let self else { return }
+            self.settings.panelSize = PanelSize(size)
+            self.scheduleSave()
+        }
         panel.focusSearchHandler = { [weak rootView] in
             rootView?.focusSearchField()
         }

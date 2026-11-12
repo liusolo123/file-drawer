@@ -47,4 +47,40 @@ struct PanelPlacementTests {
         #expect(AppMetadata.displayName == "文件抽屉")
         #expect(AppMetadata.bundleIdentifier == "com.liusolo.filedrawer")
     }
+
+    @Test("尺寸过大时夹取到可见区域")
+    func clampsOversizedPanelSize() {
+        let visible = CGRect(x: 0, y: 0, width: 1440, height: 900)
+
+        let size = PanelPlacement.clampedSize(
+            CGSize(width: 2000, height: 1200),
+            in: visible
+        )
+
+        #expect(size == CGSize(width: 1440, height: 900))
+    }
+
+    @Test("尺寸过小时抬到最小尺寸")
+    func raisesUndersizedPanelSize() {
+        let visible = CGRect(x: 0, y: 0, width: 1440, height: 900)
+
+        let size = PanelPlacement.clampedSize(
+            CGSize(width: 200, height: 100),
+            in: visible
+        )
+
+        #expect(size == CGSize(width: 480, height: 320))
+    }
+
+    @Test("小屏上最小尺寸不会超过屏幕")
+    func minimumNeverExceedsScreen() {
+        let visible = CGRect(x: 0, y: 0, width: 400, height: 300)
+
+        let size = PanelPlacement.clampedSize(
+            CGSize(width: 480, height: 320),
+            in: visible
+        )
+
+        #expect(size == CGSize(width: 400, height: 300))
+    }
 }
