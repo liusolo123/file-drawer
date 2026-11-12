@@ -30,7 +30,7 @@ final class SettingsContentView: NSView {
 }
 
 @MainActor
-final class SettingsWindowController: NSWindowController {
+final class SettingsWindowController: NSWindowController, NSWindowDelegate {
     var onHotkeyChange: ((HotkeySpec) -> Bool)?
     var onShowsHiddenFilesChange: ((Bool) -> Void)?
     var onLaunchAtLoginChange: ((Bool) -> Bool)?
@@ -63,6 +63,7 @@ final class SettingsWindowController: NSWindowController {
         window.center()
 
         super.init(window: window)
+        window.delegate = self
         build(settings: settings)
     }
 
@@ -176,7 +177,7 @@ final class SettingsWindowController: NSWindowController {
     @objc private func recordTapped() {
         recording = true
         onRecordingChange?(true)
-        hotkeyLabel.stringValue = "请按下新的快捷键…"
+        hotkeyLabel.stringValue = "请按下新的快捷键…（避开系统保留组合）"
         window?.makeFirstResponder(window?.contentView)
     }
 
@@ -256,11 +257,28 @@ final class SettingsWindowController: NSWindowController {
     }
 
     private func presentConflictAlert() {
+        NSApp.activate()
+
         let alert = NSAlert()
         alert.messageText = "快捷键注册失败"
-        alert.informativeText = "这个组合可能已被其他应用占用，请换一个。"
+        alert.informativeText = "这个组合可能被系统或其他应用占用（例如 ⌘Space、⌘Tab），请换一个。"
         alert.alertStyle = .warning
         alert.addButton(withTitle: "知道了")
         alert.runModal()
+    }
+
+    // MARK: - NSWindowDelegate
+
+    func windowDidResignKey(_ notification: Notification) {
+        // 录入时窗口失焦，说明组合被系统截走（如 ⌘Space 触发 Spotlight）。
+        guard recording, !NSApp.isActive else { return }
+
+        stopRecording()
+        hotkeyLabel.stringValue = currentHotkey.displayName
+        presentConflictAlert()
+    }
+
+    func windowWillClose(_ notification: Notification) {
+        stopRecording()
     }
 }
