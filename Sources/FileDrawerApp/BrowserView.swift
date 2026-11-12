@@ -316,12 +316,13 @@ final class BrowserView: NSView {
         placeholder.isHidden = true
         placeholder.translatesAutoresizingMaskIntoConstraints = false
 
-        buildRecovery()
-
         addSubview(header)
         addSubview(divider)
         addSubview(scrollView)
         addSubview(placeholder)
+
+        // 恢复视图必须最后加入，否则会被滚动视图盖住而无法点击。
+        buildRecovery()
 
         NSLayoutConstraint.activate([
             header.topAnchor.constraint(equalTo: topAnchor, constant: 12),
